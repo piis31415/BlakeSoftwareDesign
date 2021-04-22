@@ -1,6 +1,7 @@
-const express = require('express');
+import * as express from 'express';
+import config from 'config';
+
 const app = express();
-const config = require('config');
 // Change to config?
 const port = 3000;
 

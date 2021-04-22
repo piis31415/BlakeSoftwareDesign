@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs", // for some reason the module resolution breaks if set to anything else
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "ts-out"
+  },
+  "include": ["index.ts","app/**/*"]
+  }
