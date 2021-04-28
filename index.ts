@@ -1,14 +1,13 @@
 import * as express from 'express';
-import config from 'config';
+import * as config from 'config';
+import { OAuthRoute } from './app/login/oauth';
 
 const app = express();
-// Change to config?
-const port = 3000;
+const port = config.get('port');
 
-app.use('/',express.static('dist'));
+app.use('/', express.static('dist'));
 
-// app.post('/login', passport.authenticate('', { successRedirect: '/',
-//                                                     failureRedirect: '/login' }));
+app.use('/', OAuthRoute);
 
 
 app.listen(port);

@@ -1,6 +1,9 @@
 ---
+port: 5000
+host: 'localhost'
 googleOauth:
   clientId: '238455601010-q1upaaa17s4q3ku3sikr253d4q6pquen.apps.googleusercontent.com'
   clientSecret: 'Tp0i4lI-DfdIA9Gs3OzJEGKl'
 mongo:
-  uri: 'mongodb://localhost:27017'
+  uri: 'mongodb://localhost/LearningWorks'
+  port: 27017

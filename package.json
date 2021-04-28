@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx ts-node-dev --respawn index.ts"
   },
   "repository": {
     "type": "git",
@@ -17,15 +17,24 @@
   },
   "homepage": "https://github.com/piis31415/BlakeSoftwareDesign#readme",
   "dependencies": {
-    "@types/mongoose": "^5.10.5",
-    "@types/passport": "^1.0.6",
     "config": "^3.3.6",
+    "connect-mongo": "^4.4.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "google-auth-library": "^7.0.4",
+    "js-yaml": "^4.1.0",
     "mongoose": "^5.12.5",
+    "passport": "^0.4.1",
     "passport-google-oauth2": "^0.2.0",
     "typescript": "^4.2.4"
   },
   "devDependencies": {
+    "@types/config": "^0.0.38",
+    "@types/connect-mongo": "^3.1.3",
+    "@types/express-session": "^1.17.3",
+    "@types/mongoose": "^5.10.5",
+    "@types/passport": "^1.0.6",
+    "@types/passport-google-oauth2": "^0.1.3",
     "ts-node-dev": "^1.1.6"
   }
 }

@@ -1,5 +1,6 @@
-import { NativeError } from "mongoose";
-import { mongoose } from "./mongoDB";
+import { Document, NativeError } from "mongoose";
+import { mongoose } from "./mongodb";
+import { ReturnMessage } from "../util";
 
 enum UserRole {
   Admin,
@@ -8,21 +9,12 @@ enum UserRole {
   None
 }
 
-/**
- * This Will be returned
- */
-enum UserAddCode {
-  "Cannot create null user",
-  "User already exists",
-  Success
-}
-
 const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  role: UserRole
+  name: {type: String, unique: true, required: true},
+  email: {type: String, unique: true, required: true},
+  role: {type: UserRole, unique: false, required: true}
 });
-const userModel = mongoose.model('User',userSchema);
+const UserModel = mongoose.model('User', userSchema);
 
 /**
  * This function allows people with permissions
@@ -32,19 +24,17 @@ const userModel = mongoose.model('User',userSchema);
  * @param {UserRole} role The role of the user (Admin, Teacher, or Student)
  * @returns {UserAddError}
  */
-async function addUser(name: String, email: String, role: UserRole) {
-  if (name == null || email == null) return UserAddCode["Cannot create null user"];
-  if (checkUserExists(email)) return UserAddCode["User already exists"];
+async function addUser(name: String, email: String, role: UserRole): Promise<ReturnMessage> {
+  if (name == null || email == null) return {error: true, msg: "Cannot create null user"};
+  if (await checkUserExists(email)) return {error: true, msg: "User already exists"};
   // creates a new mongodb user document
-  const user = new userModel({
+  const doc = new UserModel({
     name,
-    email,
+    email: email.toLowerCase(),
     role
   });
-  user.save((err: NativeError, doc: Document<any, {}>) => {
-    // error checking
-    console.error('err:', err);
-  });
+  await doc.save();
+  return {error: false, msg: "Success"};
 }
 
 /**
@@ -52,14 +42,19 @@ async function addUser(name: String, email: String, role: UserRole) {
  * @param {string} email User's google email
  * @returns {boolean} Whether the user exists
  */
-function checkUserExists(email: String) {
-  if (email == null) return;
+async function checkUserExists(email: String): Promise<boolean> {
+  if (email == null) return false;
   // Since email accounts will be unique
   // that can be used in the find function.
-  // Consider using googleId's as well?
-  return true
+  const user = await UserModel.findOne({ email: email.toLowerCase() });
+  if (user == null) return false;
+  return true;
 }
 
 export {
-  userModel
+  UserModel,
+  UserRole,
+  ReturnMessage,
+  addUser,
+  checkUserExists
 }

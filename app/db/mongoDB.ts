@@ -1,6 +1,9 @@
 import * as mongoose from 'mongoose';
+import * as config from 'config';
 
-mongoose.connect('mongodb://localhost/users', {
+const DBPORT = config.get('mongo.port');
+
+mongoose.connect('mongodb://localhost/LearningWorks', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
