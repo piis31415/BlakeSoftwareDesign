@@ -1,6 +1,6 @@
 import { Document, NativeError } from "mongoose";
-import { mongoose } from "./mongodb";
-import { ReturnMessage } from "../util";
+import { mongoose } from "./_mongodb";
+import type { ReturnMessage } from "../_util";
 
 enum UserRole {
   Admin,
@@ -12,9 +12,14 @@ enum UserRole {
 const userSchema = new mongoose.Schema({
   name: {type: String, unique: true, required: true},
   email: {type: String, unique: true, required: true},
-  role: {type: UserRole, unique: false, required: true}
+  role: {type: UserRole, unique: false, required: true},
+  cookie: {type: String}
 });
 const UserModel = mongoose.model('User', userSchema);
+
+const sessionSchema = new mongoose.Schema({
+  
+})
 
 /**
  * This function allows people with permissions
@@ -54,7 +59,9 @@ async function checkUserExists(email: String): Promise<boolean> {
 export {
   UserModel,
   UserRole,
-  ReturnMessage,
   addUser,
   checkUserExists
+}
+export type {
+  ReturnMessage
 }

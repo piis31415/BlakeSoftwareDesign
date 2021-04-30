@@ -1,11 +1,9 @@
 <script>
-  import NavBar from './lib/NavBar.svelte';
-
   let error;
   let errorMsg;
 </script>
 
-<NavBar error={error} errorMsg={errorMsg}/>
+
 {#if error}
 <!-- error msg box -->
   <div class="absolute w-full flex top-2">
@@ -20,3 +18,4 @@
 <style style lang="postcss">
 
 </style>
+

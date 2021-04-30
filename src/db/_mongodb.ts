@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import * as config from 'config';
 
-const DBPORT = config.get('mongo.port');
+// const DBPORT = config.get('mongo.port');
 
 mongoose.connect('mongodb://localhost/LearningWorks', {
   useNewUrlParser: true,

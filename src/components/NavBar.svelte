@@ -1,9 +1,11 @@
-<script>
+<script lang="ts">
   import Login from "./GoogleLogin.svelte";
-  export let error;
-  export let errorMsg;
-  export let loggedIn = false;
+  export let error: boolean;
+  export let errorMsg: string;
+  export let loggedIn: boolean = false;
 </script>
+
+
 <div class="bg-yellow-400 w-full flex flex-row justify-between h-16 fixed top-0">
   <div id="navigation" class="flex flex-row h-full">
     <a href="/">Home</a>

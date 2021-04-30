@@ -1,5 +1,7 @@
 // a cli utility to add a new admin user
-import { UserRole, addUser, ReturnMessage } from "./app/db/user";
+import { UserRole, addUser } from "./src/db/_user";
+import type { ReturnMessage } from "./src/db/_user";
+
 import * as readline from 'readline';
 import { exit } from 'process';
 
@@ -35,7 +37,7 @@ async function main() {
 Exit this utility at any time by pressing Ctrl + C twice.\n\n`);
   const name: String = String(await getUserInput("What's the name of the new administrative account?"));
   const email: String = String(await getUserInput("What's the email of the new account?"));
-  const code: ReturnMessage = await addUser(name, email, UserRole.Admin);
+  const code = await addUser(name, email, UserRole.Admin);
   // await console.clear();
   if (code.error) {
     await rl.write(`User could not be added because: ${code.msg}\n`);

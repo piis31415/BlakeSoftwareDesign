@@ -1,21 +1,15 @@
-// Google Oauth Stuff
 import * as config from 'config';
-import { checkUserExists as checkUser } from '../db/user';
+import { checkUserExists as checkUser } from '../../db/_user'
 import { OAuth2Client }  from 'google-auth-library';
-import { Router, json } from 'express';
-import { ReturnMessage } from '../util';
+import type { ReturnMessage } from '../../_util'
 
-const router = Router();
 const GOOGLE_CLIENT_ID: string = config.get('googleOauth.clientId');
 const GOOGLE_CLIENT_SECRET: string = config.get('googleOauth.clientSecret');
 const oAuthClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
-// allows the server to be able to parse json
-router.use(json());
-
-// verifies if the user sent jwt is valid
-router.post('/token-login', async (req, res) => {
-  const token: string = req.body.token;
+export async function post(request) {
+  console.log('bruhHhHhHh',request);
+  const token: string = request.body.token;
   const ticket = await oAuthClient.verifyIdToken({
     idToken: token,
     audience: GOOGLE_CLIENT_ID,
@@ -37,7 +31,11 @@ router.post('/token-login', async (req, res) => {
     msg.error = true;
     msg.msg = "Invalid Email";
   }
-  return await res.send(msg);
-})
-
-export { router as OAuthRoute };
+  return {
+    body: msg,
+    headers: {
+      "Set-Cookie": [""]
+      'Content-Type': 'application/json'
+    }
+  }
+}

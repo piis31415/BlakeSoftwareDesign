@@ -3,6 +3,6 @@ interface ReturnMessage {
   msg: string;
 }
 
-export {
+export type {
   ReturnMessage
-}
+};
