@@ -1,7 +1,7 @@
-const preprocess = require('svelte-preprocess');
+import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
-module.exports = {
+const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
 	preprocess: [
@@ -13,5 +13,11 @@ module.exports = {
 	kit: {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte'
+		// websocket make sure to share
+		// port 24678 when vscode live sharing
 	}
 };
+
+export {
+	config as default
+}

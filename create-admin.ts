@@ -1,4 +1,6 @@
 // a cli utility to add a new admin user
+// DEPRECATED
+
 import { UserRole, addUser } from "./src/db/_user";
 import type { ReturnMessage } from "./src/db/_user";
 

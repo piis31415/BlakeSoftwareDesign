@@ -1,24 +1,49 @@
+<script context="module" lang="ts">
+  /** @type {import('@sveltejs/kit').Load}*/
+  export async function load({ session }) {
+    console.log('user logged in:', session.auth);
+    if (!session.auth) {
+      return {
+        status: 302, // redirect
+        redirect: '/'
+      }
+    }
+    return {
+      status: 200
+    }
+  }
+</script>
 <script>
-    import Button from '@smui/button';
-    import Card from '@smui/card';
+  import { onMount } from 'svelte';
+
+  let editor;
+  
+  onMount(async () => {
+    // Dynamically load editor on client side
+    // because the Editor requires access to window
+    // globals and such
+    editor = (await import('../../components/Editor.svelte')).default;
+  })
+
+  function onEditorSave(bruh) {
+    console.log('bruh', bruh);
+  }
 </script>
 
+<main>
+  <div class="border-solid border-blue-400 border-2 rounded-lg m-4">
+    <svelte:component this={editor} on:save={onEditorSave} />
+  </div>
+</main>
 
-<div class="card-display">
-    <div class="card-container">
-      <Card>
-        <Media class="card-media-16x9" aspectRatio="16x9">
-          <MediaContent>
-            <h2
-              class="mdc-typography--headline6"
-              style="color: #fff; position: absolute; bottom: 16px; left: 16px; margin: 0;"
-            >
-              A card with 16x9 media.
-            </h2>
-          </MediaContent>
-        </Media>
-        <Content style="color: #888;">Here's some gray text down here.</Content>
-      </Card>
-    </div>
-</div>
-
+<style style lang='postcss'>
+  main {
+    @apply grid;
+    grid-template-columns: 100%;
+  }
+  @screen lg {
+    main {
+      grid-template-columns: 65% 35%;
+    }
+  } 
+</style>

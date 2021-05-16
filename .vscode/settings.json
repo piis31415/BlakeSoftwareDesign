@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    ".npmrc": true,
+    ".prettierignore": true,
+    ".prettierrc": true,
+    ".svelte": true,
+    ".vscode": true,
+    "node_modules": true
+  }
+}

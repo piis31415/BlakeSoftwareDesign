@@ -18,8 +18,9 @@ module.exports = {
 	},
 	theme: {
 		extend: {
-			spacing: {
-				"navbar": "3rem",
+			colors: {
+				'light-blue': '#E4E5F4',
+				'dark-blue': '#394c6a',
 			}
 		},
 	},
