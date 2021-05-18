@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   export async function load({ session }) {
-    console.log('bruh', session, context);
+    console.log('bruh', session);
     console.log(session.auth);
     return {
       props: {
@@ -19,32 +19,33 @@
 
 <nav class="w-full bg-light-blue flex flex-row h-20 fixed top-0">
   <img src={logo} on:click={()=>{goto('/')}} alt="Learning Works Logo" class="cursor-pointer"/>
-  <div>
-    <a href="/schedules-links">Schedule and Links</a>
-  </div>
-  <div>
-    <a href="/win-skittles">Win Skittles</a>
-  </div>
-  <div>
-    <a href="/other">Extra Info</a>
-  </div>
-  {#if !loggedIn}
-    <Login/>
-  {:else}
-    <div>
-      <a href="/dashboard">Dashboard</a>
-    </div>
-  {/if}
+  <button class="flex-1" on:click={()=>goto('/announcements')}>
+    Announcements
+  </button>  
+  <button class="flex-1" on:click={()=>goto('/schedules-links')}>
+      Schedule and Links
+    </button>
+  <button class="flex-1" on:click={()=>goto('/win-skittles')}>
+      Win Skittles
+    </button>
+    <button class="flex-1" on:click={()=>goto('/extra-info')}>
+      Extra Info
+    </button>
+    {#if !loggedIn}
+      <Login/>
+    {:else}
+    <button class="flex-1" on:click={()=>goto('/dashboard')}>
+      Dashboard
+    </button>
+    {/if}
 </nav>
 
 <style style lang="postcss">
   nav > div {
     @apply text-center m-auto  text-black font-normal transition-all duration-700;
   }
-  #navigations > div a {
-    @apply m-auto;
+  nav > button:hover {
+    @apply bg-light-blue-hover;
   }
-  #navigation > div a:hover {
-    @apply font-medium;
-  }
+  
 </style>

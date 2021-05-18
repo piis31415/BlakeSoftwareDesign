@@ -3,7 +3,7 @@
 </div>
 
 <style style lang="postcss">
-  #page-container {
-    /* height: calc(100vh - theme('spacing.navbar')); */
-  }
+  /* #page-container {
+    height: calc(100vh - theme('spacing.navbar'));
+  } */
 </style>

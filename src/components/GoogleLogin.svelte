@@ -2,4 +2,4 @@
     import { googleAuth } from "./util";
 </script>
 
-<div on:click={googleAuth} class="text-navbar text-center m-auto cursor-pointer">Login</div>
+<button on:click={googleAuth} class="flex-1 text-navbar text-center m-auto cursor-pointer">Login</button>

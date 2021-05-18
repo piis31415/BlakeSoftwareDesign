@@ -5,8 +5,8 @@ const c = [
 	() => import("../../../src/routes/schedules-links/index.svelte"),
 	() => import("../../../src/routes/announcements/index.svelte"),
 	() => import("../../../src/routes/win-skittles/index.svelte"),
-	() => import("../../../src/routes/dashboard/index.svelte"),
-	() => import("../../../src/routes/other/index.svelte")
+	() => import("../../../src/routes/extra-info/index.svelte"),
+	() => import("../../../src/routes/dashboard/index.svelte")
 ];
 
 const d = decodeURIComponent;
@@ -24,11 +24,11 @@ export const routes = [
 	// src/routes/win-skittles/index.svelte
 	[/^\/win-skittles\/?$/, [c[0], c[5]], [c[1]]],
 
-	// src/routes/dashboard/index.svelte
-	[/^\/dashboard\/?$/, [c[0], c[6]], [c[1]]],
+	// src/routes/extra-info/index.svelte
+	[/^\/extra-info\/?$/, [c[0], c[6]], [c[1]]],
 
-	// src/routes/other/index.svelte
-	[/^\/other\/?$/, [c[0], c[7]], [c[1]]]
+	// src/routes/dashboard/index.svelte
+	[/^\/dashboard\/?$/, [c[0], c[7]], [c[1]]]
 ];
 
 export const fallback = [c[0](), c[1]()];

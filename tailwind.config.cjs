@@ -20,7 +20,8 @@ module.exports = {
 		extend: {
 			colors: {
 				'light-blue': '#E4E5F4',
-				'dark-blue': '#394c6a',
+				'light-blue-hover': '#C4C5D4',
+				'dark-blue': '#394c6a'
 			}
 		},
 	},
