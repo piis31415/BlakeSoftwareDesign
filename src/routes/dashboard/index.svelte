@@ -40,6 +40,11 @@
   <div class="box">
     <h3 class="text-center text-3xl">Add New User</h3>
     <DividingBar />
+    <div>
+      <textarea class="w-full h-full m-4">
+
+      </textarea>
+    </div>
   </div>
 </main>
 
