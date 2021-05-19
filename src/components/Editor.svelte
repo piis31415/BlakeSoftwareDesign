@@ -3,51 +3,54 @@
   import Resizer from "react-image-file-resizer";
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
-  import EditorJS from "@editorjs/editorjs";
-  import ImageTool from "@editorjs/image";
-  import Header from "@editorjs/header";
-  import Table from "@editorjs/table";
-  import Embed from "@editorjs/embed";
-  import Quote from "@editorjs/quote";
-  import Code from "@editorjs/code";
-  import List from "@editorjs/list";
-  import Delimiter from "@editorjs/delimiter";
-  import Checklist from "@editorjs/checklist";
   let editor;
+  export let tools;
   export let holder = "editorjs";
   export let data = {};
   export let resize = { w: 750, h: 750, q: 75 };
-  export let tools = {
-    header: {
-      class: Header,
-      inlineToolbar: true,
-    },
-    embed: Embed,
-    quote: Quote,
-    code: Code,
-    delimiter: Delimiter,
-    table: Table,
-    list: List,
-    checklist: Checklist,
-    image: {
-      class: ImageTool,
-      config: {
-        uploader: {
-          uploadByFile(file) {
-            // return _getBase64(file, function (e) {}).then((data) => {
-            //   console.log(data);
-            //   return { success: 1, file: { url: data } };
-            // });
-            return resizeImage(file, () => {}).then((data) => {
-              console.log(data);
-              return { success: 1, file: { url: data } };
-            });
+  onMount(async () => {
+    const EditorJS = (await import("@editorjs/editorjs")).default;
+    const ImageTool = (await import("@editorjs/image")).default;
+    const Header = (await import( "@editorjs/header")).default;
+    const Table = (await import( "@editorjs/table")).default;
+    const Embed = (await import( "@editorjs/embed")).default;
+    const Quote = (await import( "@editorjs/quote")).default;
+    const Code = (await import( "@editorjs/code")).default;
+    const List = (await import( "@editorjs/list")).default;
+    const Delimiter = (await import( "@editorjs/delimiter")).default;
+    const Checklist = (await import( "@editorjs/checklist")).default;
+    
+    tools = {
+      header: {
+        class: Header,
+        inlineToolbar: true,
+      },
+      embed: Embed,
+      quote: Quote,
+      code: Code,
+      delimiter: Delimiter,
+      table: Table,
+      list: List,
+      checklist: Checklist,
+      image: {
+        class: ImageTool,
+        config: {
+          uploader: {
+            uploadByFile(file) {
+              // return _getBase64(file, function (e) {}).then((data) => {
+              //   console.log(data);
+              //   return { success: 1, file: { url: data } };
+              // });
+              return resizeImage(file, () => {}).then((data) => {
+                console.log(data);
+                return { success: 1, file: { url: data } };
+              });
+            },
           },
         },
       },
-    },
-  };
-  onMount(() => {
+    };
+    
     editor = new EditorJS({
       holder,
       data,
@@ -98,7 +101,7 @@
 </div>
 
 <style style lang="postcss">
-  h2 {
-    @apply text-2xl;
+  :global(h2) {
+    @apply text-4xl;
   }
 </style>
