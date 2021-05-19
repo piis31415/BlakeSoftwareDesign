@@ -18,6 +18,9 @@ export const routes = [
 	// src/routes/schedules-links/index.svelte
 	[/^\/schedules-links\/?$/, [c[0], c[3]], [c[1]]],
 
+	// src/routes/announcements/index.ts
+	[/^\/announcements\/?$/],
+
 	// src/routes/announcements/index.svelte
 	[/^\/announcements\/?$/, [c[0], c[4]], [c[1]]],
 
@@ -28,7 +31,10 @@ export const routes = [
 	[/^\/extra-info\/?$/, [c[0], c[6]], [c[1]]],
 
 	// src/routes/dashboard/index.svelte
-	[/^\/dashboard\/?$/, [c[0], c[7]], [c[1]]]
+	[/^\/dashboard\/?$/, [c[0], c[7]], [c[1]]],
+
+	// src/routes/add-user.ts
+	[/^\/add-user\/?$/]
 ];
 
 export const fallback = [c[0](), c[1]()];

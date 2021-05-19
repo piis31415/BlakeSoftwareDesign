@@ -41,6 +41,9 @@
 </nav>
 
 <style style lang="postcss">
+  nav {
+    z-index: 100;
+  }
   nav > div {
     @apply text-center m-auto  text-black font-normal transition-all duration-700;
   }

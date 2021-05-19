@@ -2508,7 +2508,7 @@ var require_PostgrestFilterBuilder = __commonJS({
         }
         return this;
       }
-      textSearch(column, query, {config: config2, type = null} = {}) {
+      textSearch(column, query, {config, type = null} = {}) {
         let typePart = "";
         if (type === "plain") {
           typePart = "pl";
@@ -2517,27 +2517,27 @@ var require_PostgrestFilterBuilder = __commonJS({
         } else if (type === "websearch") {
           typePart = "w";
         }
-        const configPart = config2 === void 0 ? "" : `(${config2})`;
+        const configPart = config === void 0 ? "" : `(${config})`;
         this.url.searchParams.append(`${column}`, `${typePart}fts${configPart}.${query}`);
         return this;
       }
-      fts(column, query, {config: config2} = {}) {
-        const configPart = typeof config2 === "undefined" ? "" : `(${config2})`;
+      fts(column, query, {config} = {}) {
+        const configPart = typeof config === "undefined" ? "" : `(${config})`;
         this.url.searchParams.append(`${column}`, `fts${configPart}.${query}`);
         return this;
       }
-      plfts(column, query, {config: config2} = {}) {
-        const configPart = typeof config2 === "undefined" ? "" : `(${config2})`;
+      plfts(column, query, {config} = {}) {
+        const configPart = typeof config === "undefined" ? "" : `(${config})`;
         this.url.searchParams.append(`${column}`, `plfts${configPart}.${query}`);
         return this;
       }
-      phfts(column, query, {config: config2} = {}) {
-        const configPart = typeof config2 === "undefined" ? "" : `(${config2})`;
+      phfts(column, query, {config} = {}) {
+        const configPart = typeof config === "undefined" ? "" : `(${config})`;
         this.url.searchParams.append(`${column}`, `phfts${configPart}.${query}`);
         return this;
       }
-      wfts(column, query, {config: config2} = {}) {
-        const configPart = typeof config2 === "undefined" ? "" : `(${config2})`;
+      wfts(column, query, {config} = {}) {
+        const configPart = typeof config === "undefined" ? "" : `(${config})`;
         this.url.searchParams.append(`${column}`, `wfts${configPart}.${query}`);
         return this;
       }
@@ -3916,11 +3916,11 @@ var require_WebSocketFrame = __commonJS({
     var WAITING_FOR_MASK_KEY = 4;
     var WAITING_FOR_PAYLOAD = 5;
     var COMPLETE = 6;
-    function WebSocketFrame(maskBytes, frameHeader, config2) {
+    function WebSocketFrame(maskBytes, frameHeader, config) {
       this.maskBytes = maskBytes;
       this.frameHeader = frameHeader;
-      this.config = config2;
-      this.maxReceivedFrameSize = config2.maxReceivedFrameSize;
+      this.config = config;
+      this.maxReceivedFrameSize = config.maxReceivedFrameSize;
       this.protocolError = false;
       this.frameTooLarge = false;
       this.invalidCloseFrameLength = false;
@@ -4325,7 +4325,7 @@ var require_WebSocketConnection = __commonJS({
     var STATE_CLOSED = "closed";
     var setImmediateImpl = "setImmediate" in global ? global.setImmediate.bind(global) : process.nextTick.bind(process);
     var idCounter = 0;
-    function WebSocketConnection(socket, extensions, protocol, maskOutgoingPackets, config2) {
+    function WebSocketConnection(socket, extensions, protocol, maskOutgoingPackets, config) {
       this._debug = utils.BufferingLogger("websocket:connection", ++idCounter);
       this._debug("constructor");
       if (this._debug.enabled) {
@@ -4342,7 +4342,7 @@ var require_WebSocketConnection = __commonJS({
           this._pingListenerCount--;
         }
       });
-      this.config = config2;
+      this.config = config;
       this.socket = socket;
       this.protocol = protocol;
       this.extensions = extensions;
@@ -5410,7 +5410,7 @@ var require_WebSocketServer = __commonJS({
     var debug = require_src()("websocket:server");
     var EventEmitter = require("events").EventEmitter;
     var WebSocketRequest = require_WebSocketRequest();
-    var WebSocketServer = function WebSocketServer2(config2) {
+    var WebSocketServer = function WebSocketServer2(config) {
       EventEmitter.call(this);
       this._handlers = {
         upgrade: this.handleUpgrade.bind(this),
@@ -5419,12 +5419,12 @@ var require_WebSocketServer = __commonJS({
       };
       this.connections = [];
       this.pendingRequests = [];
-      if (config2) {
-        this.mount(config2);
+      if (config) {
+        this.mount(config);
       }
     };
     util.inherits(WebSocketServer, EventEmitter);
-    WebSocketServer.prototype.mount = function(config2) {
+    WebSocketServer.prototype.mount = function(config) {
       this.config = {
         httpServer: null,
         maxReceivedFrameSize: 65536,
@@ -5444,7 +5444,7 @@ var require_WebSocketServer = __commonJS({
         disableNagleAlgorithm: true,
         closeTimeout: 5e3
       };
-      extend(this.config, config2);
+      extend(this.config, config);
       if (this.config.httpServer) {
         if (!Array.isArray(this.config.httpServer)) {
           this.config.httpServer = [this.config.httpServer];
@@ -5579,7 +5579,7 @@ var require_WebSocketClient = __commonJS({
       String.fromCharCode(9)
     ];
     var excludedTlsOptions = ["hostname", "port", "method", "path", "headers"];
-    function WebSocketClient(config2) {
+    function WebSocketClient(config) {
       EventEmitter.call(this);
       this.config = {
         maxReceivedFrameSize: 1048576,
@@ -5592,15 +5592,15 @@ var require_WebSocketClient = __commonJS({
         closeTimeout: 5e3,
         tlsOptions: {}
       };
-      if (config2) {
+      if (config) {
         var tlsOptions;
-        if (config2.tlsOptions) {
-          tlsOptions = config2.tlsOptions;
-          delete config2.tlsOptions;
+        if (config.tlsOptions) {
+          tlsOptions = config.tlsOptions;
+          delete config.tlsOptions;
         } else {
           tlsOptions = {};
         }
-        extend(this.config, config2);
+        extend(this.config, config);
         extend(this.config.tlsOptions, tlsOptions);
       }
       this._req = null;
@@ -5851,13 +5851,13 @@ var require_WebSocketRouter = __commonJS({
     var util = require("util");
     var EventEmitter = require("events").EventEmitter;
     var WebSocketRouterRequest = require_WebSocketRouterRequest();
-    function WebSocketRouter(config2) {
+    function WebSocketRouter(config) {
       EventEmitter.call(this);
       this.config = {
         server: null
       };
-      if (config2) {
-        extend(this.config, config2);
+      if (config) {
+        extend(this.config, config);
       }
       this.handlers = [];
       this._requestHandler = this.handleRequest.bind(this);
@@ -6257,8 +6257,8 @@ var require_W3CWebSocket = __commonJS({
       this._connection.on("close", function(code, reason) {
         onClose.call(self2, code, reason);
       });
-      this._connection.on("message", function(msg2) {
-        onMessage.call(self2, msg2);
+      this._connection.on("message", function(msg) {
+        onMessage.call(self2, msg);
       });
       this.dispatchEvent(new yaeti.Event("open"));
     }
@@ -6535,8 +6535,8 @@ var require_RealtimeClient = __commonJS({
           }
         });
       }
-      log(kind, msg2, data) {
-        this.logger(kind, msg2, data);
+      log(kind, msg, data) {
+        this.logger(kind, msg, data);
       }
       onOpen(callback) {
         this.stateChangeCallbacks.open.push(callback);
@@ -6589,14 +6589,14 @@ var require_RealtimeClient = __commonJS({
         }
       }
       onConnMessage(rawMessage) {
-        this.decode(rawMessage.data, (msg2) => {
-          let {topic, event, payload, ref} = msg2;
+        this.decode(rawMessage.data, (msg) => {
+          let {topic, event, payload, ref} = msg;
           if (ref && ref === this.pendingHeartbeatRef) {
             this.pendingHeartbeatRef = null;
           }
           this.log("receive", `${payload.status || ""} ${topic} ${event} ${ref && "(" + ref + ")" || ""}`, payload);
           this.channels.filter((channel) => channel.isMember(topic)).forEach((channel) => channel.trigger(event, payload, ref));
-          this.stateChangeCallbacks.message.forEach((callback) => callback(msg2));
+          this.stateChangeCallbacks.message.forEach((callback) => callback(msg));
         });
       }
       endPointURL() {
@@ -7435,970 +7435,6 @@ var require_main5 = __commonJS({
       return new SupabaseClient_1.default(supabaseUrl, supabaseKey, options2);
     };
     exports.createClient = createClient;
-  }
-});
-
-// node_modules/config/defer.js
-var require_defer = __commonJS({
-  "node_modules/config/defer.js"(exports, module2) {
-    function DeferredConfig() {
-    }
-    DeferredConfig.prototype.prepare = function() {
-    };
-    DeferredConfig.prototype.resolve = function() {
-    };
-    function deferConfig(func) {
-      var obj = Object.create(DeferredConfig.prototype);
-      obj.prepare = function(config2, prop, property) {
-        var original = prop[property]._original;
-        obj.resolve = function() {
-          var value = func.call(config2, config2, original);
-          Object.defineProperty(prop, property, {value});
-          return value;
-        };
-        Object.defineProperty(prop, property, {get: function() {
-          return obj.resolve();
-        }});
-        return obj;
-      };
-      return obj;
-    }
-    module2.exports.deferConfig = deferConfig;
-    module2.exports.DeferredConfig = DeferredConfig;
-  }
-});
-
-// node_modules/config/raw.js
-var require_raw = __commonJS({
-  "node_modules/config/raw.js"(exports, module2) {
-    function RawConfig() {
-    }
-    function raw(rawObj) {
-      var obj = Object.create(RawConfig.prototype);
-      obj.resolve = function() {
-        return rawObj;
-      };
-      return obj;
-    }
-    module2.exports.RawConfig = RawConfig;
-    module2.exports.raw = raw;
-  }
-});
-
-// node_modules/config/parser.js
-var require_parser = __commonJS({
-  "node_modules/config/parser.js"(exports, module2) {
-    var Yaml = null;
-    var VisionmediaYaml = null;
-    var Coffee = null;
-    var Iced = null;
-    var CSON = null;
-    var PPARSER = null;
-    var JSON5 = null;
-    var TOML = null;
-    var HJSON = null;
-    var XML = null;
-    var COFFEE_2_DEP = "coffeescript";
-    var COFFEE_DEP = "coffee-script";
-    var ICED_DEP = "iced-coffee-script";
-    var JS_YAML_DEP = "js-yaml";
-    var YAML_DEP = "yaml";
-    var JSON5_DEP = "json5";
-    var HJSON_DEP = "hjson";
-    var TOML_DEP = "toml";
-    var CSON_DEP = "cson";
-    var PPARSER_DEP = "properties";
-    var XML_DEP = "x2js";
-    var TS_DEP = "ts-node";
-    var Parser = module2.exports;
-    Parser.parse = function(filename, content) {
-      var parserName = filename.substr(filename.lastIndexOf(".") + 1);
-      if (typeof definitions[parserName] === "function") {
-        return definitions[parserName](filename, content);
-      }
-    };
-    Parser.xmlParser = function(filename, content) {
-      if (!XML) {
-        XML = require(XML_DEP);
-      }
-      var x2js = new XML();
-      var configObject = x2js.xml2js(content);
-      var rootKeys = Object.keys(configObject);
-      if (rootKeys.length === 1) {
-        return configObject[rootKeys[0]];
-      }
-      return configObject;
-    };
-    Parser.jsParser = function(filename, content) {
-      return require(filename);
-    };
-    Parser.tsParser = function(filename, content) {
-      if (!require.extensions[".ts"]) {
-        require(TS_DEP).register({
-          lazy: true,
-          compilerOptions: {
-            allowJs: true
-          }
-        });
-      }
-      var configObject = require(filename);
-      if (configObject.default) {
-        return configObject.default;
-      }
-      return configObject;
-    };
-    Parser.coffeeParser = function(filename, content) {
-      if (!Coffee) {
-        Coffee = {};
-        try {
-          Coffee = require(COFFEE_2_DEP);
-        } catch (e) {
-          Coffee = require(COFFEE_DEP);
-        }
-        if (Coffee.register) {
-          Coffee.register();
-        }
-      }
-      return require(filename);
-    };
-    Parser.icedParser = function(filename, content) {
-      Iced = require(ICED_DEP);
-      if (Iced.register) {
-        Iced.register();
-      }
-    };
-    Parser.yamlParser = function(filename, content) {
-      if (!Yaml && !VisionmediaYaml) {
-        try {
-          Yaml = require(JS_YAML_DEP);
-        } catch (e) {
-          try {
-            VisionmediaYaml = require(YAML_DEP);
-          } catch (e2) {
-          }
-        }
-      }
-      if (Yaml) {
-        return Yaml.load(content);
-      } else if (VisionmediaYaml) {
-        content += "\n";
-        return VisionmediaYaml.eval(Parser.stripYamlComments(content));
-      } else {
-        console.error("No YAML parser loaded.  Suggest adding js-yaml dependency to your package.json file.");
-      }
-    };
-    Parser.jsonParser = function(filename, content) {
-      try {
-        return JSON.parse(content);
-      } catch (e) {
-        if (e.name !== "SyntaxError" || e.message.indexOf("Unexpected token /") !== 0) {
-          throw e;
-        }
-        if (!JSON5) {
-          JSON5 = require(JSON5_DEP);
-        }
-        return JSON5.parse(content);
-      }
-    };
-    Parser.json5Parser = function(filename, content) {
-      if (!JSON5) {
-        JSON5 = require(JSON5_DEP);
-      }
-      return JSON5.parse(content);
-    };
-    Parser.hjsonParser = function(filename, content) {
-      if (!HJSON) {
-        HJSON = require(HJSON_DEP);
-      }
-      return HJSON.parse(content);
-    };
-    Parser.tomlParser = function(filename, content) {
-      if (!TOML) {
-        TOML = require(TOML_DEP);
-      }
-      return TOML.parse(content);
-    };
-    Parser.csonParser = function(filename, content) {
-      if (!CSON) {
-        CSON = require(CSON_DEP);
-      }
-      if (typeof CSON.parseSync === "function") {
-        return CSON.parseSync(Parser.stripComments(content));
-      }
-      return CSON.parse(Parser.stripComments(content));
-    };
-    Parser.propertiesParser = function(filename, content) {
-      if (!PPARSER) {
-        PPARSER = require(PPARSER_DEP);
-      }
-      return PPARSER.parse(content, {namespaces: true, variables: true, sections: true});
-    };
-    Parser.stripComments = function(fileStr, stringRegex) {
-      stringRegex = stringRegex || /(['"])(\\\1|.)+?\1/g;
-      var uid = "_" + +new Date(), primitives = [], primIndex = 0;
-      return fileStr.replace(stringRegex, function(match) {
-        primitives[primIndex] = match;
-        return uid + "" + primIndex++;
-      }).replace(/([^\/])(\/(?!\*|\/)(\\\/|.)+?\/[gim]{0,3})/g, function(match, $1, $2) {
-        primitives[primIndex] = $2;
-        return $1 + (uid + "") + primIndex++;
-      }).replace(/\/\/.*?\/?\*.+?(?=\n|\r|$)|\/\*[\s\S]*?\/\/[\s\S]*?\*\//g, "").replace(/\/\/.+?(?=\n|\r|$)|\/\*[\s\S]+?\*\//g, "").replace(RegExp("\\/\\*[\\s\\S]+" + uid + "\\d+", "g"), "").replace(RegExp(uid + "(\\d+)", "g"), function(match, n) {
-        return primitives[n];
-      });
-    };
-    Parser.stripYamlComments = function(fileStr) {
-      return fileStr.replace(/^\s*#.*/mg, "").replace(/^\s*[\n|\r]+/mg, "");
-    };
-    Parser.booleanParser = function(filename, content) {
-      return content === "true";
-    };
-    Parser.numberParser = function(filename, content) {
-      const numberValue = Number(content);
-      return Number.isNaN(numberValue) ? void 0 : numberValue;
-    };
-    var order = [
-      "js",
-      "cjs",
-      "ts",
-      "json",
-      "json5",
-      "hjson",
-      "toml",
-      "coffee",
-      "iced",
-      "yaml",
-      "yml",
-      "cson",
-      "properties",
-      "xml",
-      "boolean",
-      "number"
-    ];
-    var definitions = {
-      cjs: Parser.jsParser,
-      coffee: Parser.coffeeParser,
-      cson: Parser.csonParser,
-      hjson: Parser.hjsonParser,
-      iced: Parser.icedParser,
-      js: Parser.jsParser,
-      json: Parser.jsonParser,
-      json5: Parser.json5Parser,
-      properties: Parser.propertiesParser,
-      toml: Parser.tomlParser,
-      ts: Parser.tsParser,
-      xml: Parser.xmlParser,
-      yaml: Parser.yamlParser,
-      yml: Parser.yamlParser,
-      boolean: Parser.booleanParser,
-      number: Parser.numberParser
-    };
-    Parser.getParser = function(name) {
-      return definitions[name];
-    };
-    Parser.setParser = function(name, parser) {
-      definitions[name] = parser;
-      if (order.indexOf(name) === -1) {
-        order.push(name);
-      }
-    };
-    Parser.getFilesOrder = function(name) {
-      if (name) {
-        return order.indexOf(name);
-      }
-      return order;
-    };
-    Parser.setFilesOrder = function(name, newIndex) {
-      if (Array.isArray(name)) {
-        return order = name;
-      }
-      if (typeof newIndex === "number") {
-        var index2 = order.indexOf(name);
-        order.splice(newIndex, 0, name);
-        if (index2 > -1) {
-          order.splice(index2 >= newIndex ? index2 + 1 : index2, 1);
-        }
-      }
-      return order;
-    };
-  }
-});
-
-// node_modules/config/lib/config.js
-var require_config = __commonJS({
-  "node_modules/config/lib/config.js"(exports, module2) {
-    var deferConfig = require_defer().deferConfig;
-    var DeferredConfig = require_defer().DeferredConfig;
-    var RawConfig = require_raw().RawConfig;
-    var Parser = require_parser();
-    var Utils = require("util");
-    var Path = require("path");
-    var FileSystem = require("fs");
-    var DEFAULT_CLONE_DEPTH = 20;
-    var CONFIG_DIR;
-    var RUNTIME_JSON_FILENAME;
-    var NODE_ENV;
-    var APP_INSTANCE;
-    var HOST;
-    var HOSTNAME;
-    var CONFIG_SKIP_GITCRYPT;
-    var NODE_ENV_VAR_NAME;
-    var NODE_CONFIG_PARSER;
-    var env = {};
-    var configSources = [];
-    var checkMutability = true;
-    var gitCryptTestRegex = /^.GITCRYPT/;
-    var Config = function() {
-      var t = this;
-      for (var fnName in util) {
-        if (typeof util[fnName] === "function") {
-          util[fnName] = util[fnName].bind(t);
-        }
-      }
-      util.extendDeep(t, util.loadFileConfigs());
-      util.attachProtoDeep(t);
-      util.runStrictnessChecks(t);
-    };
-    var util = Config.prototype.util = {};
-    var getImpl = function(object, property) {
-      var t = this, elems = Array.isArray(property) ? property : property.split("."), name = elems[0], value = object[name];
-      if (elems.length <= 1) {
-        return value;
-      }
-      if (value === null || typeof value !== "object") {
-        return void 0;
-      }
-      return getImpl(value, elems.slice(1));
-    };
-    Config.prototype.get = function(property) {
-      if (property === null || property === void 0) {
-        throw new Error("Calling config.get with null or undefined argument");
-      }
-      if (checkMutability) {
-        if (!util.initParam("ALLOW_CONFIG_MUTATIONS", false)) {
-          util.makeImmutable(config2);
-        }
-        checkMutability = false;
-      }
-      var t = this, value = getImpl(t, property);
-      if (value === void 0) {
-        throw new Error('Configuration property "' + property + '" is not defined');
-      }
-      return value;
-    };
-    Config.prototype.has = function(property) {
-      if (property === null || property === void 0) {
-        return false;
-      }
-      var t = this;
-      return getImpl(t, property) !== void 0;
-    };
-    util.setModuleDefaults = function(moduleName, defaultProperties) {
-      var t = this, moduleConfig = util.cloneDeep(defaultProperties);
-      if (configSources.length === 0 || configSources[0].name !== "Module Defaults") {
-        configSources.splice(0, 0, {
-          name: "Module Defaults",
-          parsed: {}
-        });
-      }
-      util.setPath(configSources[0].parsed, moduleName.split("."), {});
-      util.extendDeep(getImpl(configSources[0].parsed, moduleName), defaultProperties);
-      util.setPath(t, moduleName.split("."), getImpl(t, moduleName) || {});
-      util.extendDeep(moduleConfig, getImpl(t, moduleName));
-      util.extendDeep(getImpl(t, moduleName), moduleConfig);
-      if (!util.initParam("ALLOW_CONFIG_MUTATIONS", false)) {
-        checkMutability = true;
-      }
-      return util.attachProtoDeep(getImpl(t, moduleName));
-    };
-    util.makeHidden = function(object, property, value) {
-      if (typeof value === "undefined") {
-        Object.defineProperty(object, property, {
-          enumerable: false
-        });
-      } else {
-        Object.defineProperty(object, property, {
-          value,
-          enumerable: false
-        });
-      }
-      return object;
-    };
-    util.makeImmutable = function(object, property, value) {
-      if (Buffer.isBuffer(object)) {
-        return object;
-      }
-      var properties = null;
-      if (typeof property === "string") {
-        return Object.defineProperty(object, property, {
-          value: typeof value === "undefined" ? object[property] : value,
-          writable: false,
-          configurable: false
-        });
-      }
-      if (Array.isArray(property)) {
-        properties = property;
-      } else {
-        properties = Object.keys(object);
-      }
-      for (var i = 0; i < properties.length; i++) {
-        var propertyName = properties[i], value = object[propertyName];
-        if (value instanceof RawConfig) {
-          Object.defineProperty(object, propertyName, {
-            value: value.resolve(),
-            writable: false,
-            configurable: false
-          });
-        } else if (Array.isArray(value)) {
-          value.forEach((item, index2) => {
-            if (util.isObject(item) || Array.isArray(item))
-              util.makeImmutable(item);
-          });
-          Object.defineProperty(object, propertyName, {
-            value: Object.freeze(value)
-          });
-        } else {
-          Object.defineProperty(object, propertyName, {
-            value,
-            writable: false,
-            configurable: false
-          });
-          Object.preventExtensions(object);
-          if (util.isObject(value)) {
-            util.makeImmutable(value);
-          }
-        }
-      }
-      return object;
-    };
-    util.getConfigSources = function() {
-      var t = this;
-      return configSources.slice(0);
-    };
-    util.getOption = function(options2, optionName, defaultValue) {
-      if (options2 !== void 0 && options2[optionName] !== void 0) {
-        return options2[optionName];
-      } else {
-        return defaultValue;
-      }
-    };
-    util.loadFileConfigs = function(configDir, options2) {
-      var t = this, config3 = {};
-      var node_env_var_names = ["NODE_CONFIG_ENV", "NODE_ENV"];
-      for (const node_env_var_name of node_env_var_names) {
-        NODE_ENV = util.initParam(node_env_var_name);
-        if (!!NODE_ENV) {
-          NODE_ENV_VAR_NAME = node_env_var_name;
-          break;
-        }
-      }
-      if (!NODE_ENV) {
-        NODE_ENV = "development";
-      }
-      node_env_var_names.forEach((node_env_var_name) => {
-        env[node_env_var_name] = NODE_ENV;
-      });
-      NODE_ENV = NODE_ENV.split(",");
-      CONFIG_DIR = configDir || util.initParam("NODE_CONFIG_DIR", Path.join(process.cwd(), "config"));
-      if (CONFIG_DIR.indexOf(".") === 0) {
-        CONFIG_DIR = Path.join(process.cwd(), CONFIG_DIR);
-      }
-      APP_INSTANCE = util.initParam("NODE_APP_INSTANCE");
-      HOST = util.initParam("HOST");
-      HOSTNAME = util.initParam("HOSTNAME");
-      CONFIG_SKIP_GITCRYPT = util.initParam("CONFIG_SKIP_GITCRYPT");
-      RUNTIME_JSON_FILENAME = util.initParam("NODE_CONFIG_RUNTIME_JSON", Path.join(CONFIG_DIR, "runtime.json"));
-      NODE_CONFIG_PARSER = util.initParam("NODE_CONFIG_PARSER");
-      if (NODE_CONFIG_PARSER) {
-        try {
-          var parserModule = Path.isAbsolute(NODE_CONFIG_PARSER) ? NODE_CONFIG_PARSER : Path.join(CONFIG_DIR, NODE_CONFIG_PARSER);
-          Parser = require(parserModule);
-        } catch (e) {
-          console.warn("Failed to load config parser from " + NODE_CONFIG_PARSER);
-          console.log(e);
-        }
-      }
-      try {
-        var hostName = HOST || HOSTNAME;
-        if (!hostName) {
-          var OS = require("os");
-          hostName = OS.hostname();
-        }
-      } catch (e) {
-        hostName = "";
-      }
-      env.HOSTNAME = hostName;
-      var baseNames = ["default"].concat(NODE_ENV);
-      if (hostName) {
-        var firstDomain = hostName.split(".")[0];
-        NODE_ENV.forEach(function(env2) {
-          baseNames.push(firstDomain, firstDomain + "-" + env2);
-          if (hostName !== firstDomain) {
-            baseNames.push(hostName, hostName + "-" + env2);
-          }
-        });
-      }
-      NODE_ENV.forEach(function(env2) {
-        baseNames.push("local", "local-" + env2);
-      });
-      var allowedFiles = {};
-      var resolutionIndex = 1;
-      var extNames = Parser.getFilesOrder();
-      baseNames.forEach(function(baseName) {
-        extNames.forEach(function(extName) {
-          allowedFiles[baseName + "." + extName] = resolutionIndex++;
-          if (APP_INSTANCE) {
-            allowedFiles[baseName + "-" + APP_INSTANCE + "." + extName] = resolutionIndex++;
-          }
-        });
-      });
-      var locatedFiles = util.locateMatchingFiles(CONFIG_DIR, allowedFiles);
-      locatedFiles.forEach(function(fullFilename) {
-        var configObj = util.parseFile(fullFilename, options2);
-        if (configObj) {
-          util.extendDeep(config3, configObj);
-        }
-      });
-      if (!configDir) {
-        var envConfig = {};
-        if (process.env.NODE_CONFIG) {
-          try {
-            envConfig = JSON.parse(process.env.NODE_CONFIG);
-          } catch (e) {
-            console.error("The $NODE_CONFIG environment variable is malformed JSON");
-          }
-          util.extendDeep(config3, envConfig);
-          var skipConfigSources = util.getOption(options2, "skipConfigSources", false);
-          if (!skipConfigSources) {
-            configSources.push({
-              name: "$NODE_CONFIG",
-              parsed: envConfig
-            });
-          }
-        }
-        var cmdLineConfig = util.getCmdLineArg("NODE_CONFIG");
-        if (cmdLineConfig) {
-          try {
-            cmdLineConfig = JSON.parse(cmdLineConfig);
-          } catch (e) {
-            console.error("The --NODE_CONFIG={json} command line argument is malformed JSON");
-          }
-          util.extendDeep(config3, cmdLineConfig);
-          var skipConfigSources = util.getOption(options2, "skipConfigSources", false);
-          if (!skipConfigSources) {
-            configSources.push({
-              name: "--NODE_CONFIG argument",
-              parsed: cmdLineConfig
-            });
-          }
-        }
-        env["NODE_CONFIG"] = JSON.stringify(util.extendDeep(envConfig, cmdLineConfig, {}));
-      }
-      var customEnvVars = util.getCustomEnvVars(CONFIG_DIR, extNames);
-      util.extendDeep(config3, customEnvVars);
-      var runtimeJson = util.parseFile(RUNTIME_JSON_FILENAME) || {};
-      util.extendDeep(config3, runtimeJson);
-      util.resolveDeferredConfigs(config3);
-      return config3;
-    };
-    util.locateMatchingFiles = function(configDirs, allowedFiles) {
-      return configDirs.split(Path.delimiter).reduce(function(files, configDir) {
-        if (configDir) {
-          try {
-            FileSystem.readdirSync(configDir).forEach(function(file) {
-              if (allowedFiles[file]) {
-                files.push([allowedFiles[file], Path.join(configDir, file)]);
-              }
-            });
-          } catch (e) {
-          }
-          return files;
-        }
-      }, []).sort(function(a, b) {
-        return a[0] - b[0];
-      }).map(function(file) {
-        return file[1];
-      });
-    };
-    util.resolveDeferredConfigs = function(config3) {
-      var deferred = [];
-      function _iterate(prop) {
-        var propsToSort = [];
-        for (var property in prop) {
-          if (Object.hasOwnProperty.call(prop, property) && prop[property] != null) {
-            propsToSort.push(property);
-          }
-        }
-        propsToSort.sort().forEach(function(property2) {
-          if (prop[property2].constructor === Object) {
-            _iterate(prop[property2]);
-          } else if (prop[property2].constructor === Array) {
-            for (var i = 0; i < prop[property2].length; i++) {
-              if (prop[property2][i] instanceof DeferredConfig) {
-                deferred.push(prop[property2][i].prepare(config3, prop[property2], i));
-              } else {
-                _iterate(prop[property2][i]);
-              }
-            }
-          } else {
-            if (prop[property2] instanceof DeferredConfig) {
-              deferred.push(prop[property2].prepare(config3, prop, property2));
-            }
-          }
-        });
-      }
-      _iterate(config3);
-      deferred.forEach(function(defer) {
-        defer.resolve();
-      });
-    };
-    util.parseFile = function(fullFilename, options2) {
-      var t = this, configObject = null, fileContent = null, stat = null;
-      try {
-        fileContent = FileSystem.readFileSync(fullFilename, "utf-8");
-        fileContent = fileContent.replace(/^\uFEFF/, "");
-      } catch (e2) {
-        if (e2.code !== "ENOENT") {
-          throw new Error("Config file " + fullFilename + " cannot be read. Error code is: " + e2.code + ". Error message is: " + e2.message);
-        }
-        return null;
-      }
-      try {
-        if (CONFIG_SKIP_GITCRYPT) {
-          if (gitCryptTestRegex.test(fileContent)) {
-            console.error("WARNING: " + fullFilename + " is a git-crypt file and CONFIG_SKIP_GITCRYPT is set. skipping.");
-            return null;
-          }
-        }
-        configObject = Parser.parse(fullFilename, fileContent);
-      } catch (e3) {
-        if (gitCryptTestRegex.test(fileContent)) {
-          console.error("ERROR: " + fullFilename + " is a git-crypt file and CONFIG_SKIP_GITCRYPT is not set.");
-        }
-        throw new Error("Cannot parse config file: '" + fullFilename + "': " + e3);
-      }
-      var skipConfigSources = util.getOption(options2, "skipConfigSources", false);
-      if (typeof configObject === "object" && !skipConfigSources) {
-        configSources.push({
-          name: fullFilename,
-          original: fileContent,
-          parsed: configObject
-        });
-      }
-      return configObject;
-    };
-    util.parseString = function(content, format2) {
-      var parser = Parser.getParser(format2);
-      if (typeof parser === "function") {
-        return parser(null, content);
-      }
-    };
-    util.attachProtoDeep = function(toObject, depth) {
-      if (toObject instanceof RawConfig) {
-        return toObject;
-      }
-      var t = this;
-      depth = depth === null ? DEFAULT_CLONE_DEPTH : depth;
-      if (depth < 0) {
-        return toObject;
-      }
-      for (var fnName in Config.prototype) {
-        if (!toObject[fnName]) {
-          util.makeHidden(toObject, fnName, Config.prototype[fnName]);
-        }
-      }
-      for (var prop in toObject) {
-        if (util.isObject(toObject[prop])) {
-          util.attachProtoDeep(toObject[prop], depth - 1);
-        }
-      }
-      return toObject;
-    };
-    util.cloneDeep = function cloneDeep(parent, depth, circular, prototype) {
-      var allParents = [];
-      var allChildren = [];
-      var useBuffer = typeof Buffer != "undefined";
-      if (typeof circular === "undefined")
-        circular = true;
-      if (typeof depth === "undefined")
-        depth = 20;
-      function _clone(parent2, depth2) {
-        if (parent2 === null)
-          return null;
-        if (depth2 === 0)
-          return parent2;
-        var child;
-        if (typeof parent2 != "object") {
-          return parent2;
-        }
-        if (Utils.isArray(parent2)) {
-          child = [];
-        } else if (Utils.isRegExp(parent2)) {
-          child = new RegExp(parent2.source, util.getRegExpFlags(parent2));
-          if (parent2.lastIndex)
-            child.lastIndex = parent2.lastIndex;
-        } else if (Utils.isDate(parent2)) {
-          child = new Date(parent2.getTime());
-        } else if (useBuffer && Buffer.isBuffer(parent2)) {
-          child = Buffer.alloc(parent2.length);
-          parent2.copy(child);
-          return child;
-        } else {
-          if (typeof prototype === "undefined")
-            child = Object.create(Object.getPrototypeOf(parent2));
-          else
-            child = Object.create(prototype);
-        }
-        if (circular) {
-          var index2 = allParents.indexOf(parent2);
-          if (index2 != -1) {
-            return allChildren[index2];
-          }
-          allParents.push(parent2);
-          allChildren.push(child);
-        }
-        for (var i in parent2) {
-          var propDescriptor = Object.getOwnPropertyDescriptor(parent2, i);
-          var hasGetter = propDescriptor !== void 0 && propDescriptor.get !== void 0;
-          if (hasGetter) {
-            Object.defineProperty(child, i, propDescriptor);
-          } else if (util.isPromise(parent2[i])) {
-            child[i] = parent2[i];
-          } else {
-            child[i] = _clone(parent2[i], depth2 - 1);
-          }
-        }
-        return child;
-      }
-      return _clone(parent, depth);
-    };
-    util.setPath = function(object, path, value) {
-      var nextKey = null;
-      if (value === null || path.length === 0) {
-        return;
-      } else if (path.length === 1) {
-        object[path.shift()] = value;
-      } else {
-        nextKey = path.shift();
-        if (!Object.hasOwnProperty.call(object, nextKey)) {
-          object[nextKey] = {};
-        }
-        util.setPath(object[nextKey], path, value);
-      }
-    };
-    util.substituteDeep = function(substitutionMap, variables) {
-      var result = {};
-      function _substituteVars(map, vars, pathTo) {
-        for (var prop in map) {
-          var value = map[prop];
-          if (typeof value === "string") {
-            if (vars[value] !== void 0) {
-              util.setPath(result, pathTo.concat(prop), vars[value]);
-            }
-          } else if (util.isObject(value)) {
-            if ("__name" in value && "__format" in value && vars[value.__name] !== void 0) {
-              try {
-                var parsedValue = util.parseString(vars[value.__name], value.__format);
-              } catch (err) {
-                err.message = "__format parser error in " + value.__name + ": " + err.message;
-                throw err;
-              }
-              util.setPath(result, pathTo.concat(prop), parsedValue);
-            } else {
-              _substituteVars(value, vars, pathTo.concat(prop));
-            }
-          } else {
-            msg = "Illegal key type for substitution map at " + pathTo.join(".") + ": " + typeof value;
-            throw Error(msg);
-          }
-        }
-      }
-      _substituteVars(substitutionMap, variables, []);
-      return result;
-    };
-    util.getCustomEnvVars = function(CONFIG_DIR2, extNames) {
-      var result = {};
-      var resolutionIndex = 1;
-      var allowedFiles = {};
-      extNames.forEach(function(extName) {
-        allowedFiles["custom-environment-variables." + extName] = resolutionIndex++;
-      });
-      var locatedFiles = util.locateMatchingFiles(CONFIG_DIR2, allowedFiles);
-      locatedFiles.forEach(function(fullFilename) {
-        var configObj = util.parseFile(fullFilename);
-        if (configObj) {
-          var environmentSubstitutions = util.substituteDeep(configObj, process.env);
-          util.extendDeep(result, environmentSubstitutions);
-        }
-      });
-      return result;
-    };
-    util.equalsDeep = function(object1, object2, depth) {
-      var t = this;
-      depth = depth === null ? DEFAULT_CLONE_DEPTH : depth;
-      if (depth < 0) {
-        return {};
-      }
-      if (!object1 || !object2) {
-        return false;
-      }
-      if (object1 === object2) {
-        return true;
-      }
-      if (typeof object1 != "object" || typeof object2 != "object") {
-        return false;
-      }
-      if (Object.keys(object1).length != Object.keys(object2).length) {
-        return false;
-      }
-      for (var prop in object1) {
-        if (object1[prop] && typeof object1[prop] === "object") {
-          if (!util.equalsDeep(object1[prop], object2[prop], depth - 1)) {
-            return false;
-          }
-        } else {
-          if (object1[prop] !== object2[prop]) {
-            return false;
-          }
-        }
-      }
-      return true;
-    };
-    util.diffDeep = function(object1, object2, depth) {
-      var t = this, diff = {};
-      depth = depth === null ? DEFAULT_CLONE_DEPTH : depth;
-      if (depth < 0) {
-        return {};
-      }
-      for (var parm in object2) {
-        var value1 = object1[parm];
-        var value2 = object2[parm];
-        if (value1 && value2 && util.isObject(value2)) {
-          if (!util.equalsDeep(value1, value2)) {
-            diff[parm] = util.diffDeep(value1, value2, depth - 1);
-          }
-        } else if (Array.isArray(value1) && Array.isArray(value2)) {
-          if (!util.equalsDeep(value1, value2)) {
-            diff[parm] = value2;
-          }
-        } else if (value1 !== value2) {
-          diff[parm] = value2;
-        }
-      }
-      return diff;
-    };
-    util.extendDeep = function(mergeInto) {
-      var t = this;
-      var vargs = Array.prototype.slice.call(arguments, 1);
-      var depth = vargs.pop();
-      if (typeof depth != "number") {
-        vargs.push(depth);
-        depth = DEFAULT_CLONE_DEPTH;
-      }
-      if (depth < 0) {
-        return mergeInto;
-      }
-      vargs.forEach(function(mergeFrom) {
-        for (var prop in mergeFrom) {
-          var fromIsDeferredFunc = mergeFrom[prop] instanceof DeferredConfig;
-          var isDeferredFunc = mergeInto[prop] instanceof DeferredConfig;
-          if (fromIsDeferredFunc && Object.hasOwnProperty.call(mergeInto, prop)) {
-            mergeFrom[prop]._original = isDeferredFunc ? mergeInto[prop]._original : mergeInto[prop];
-          }
-          if (mergeFrom[prop] instanceof Date) {
-            mergeInto[prop] = mergeFrom[prop];
-          }
-          if (mergeFrom[prop] instanceof RegExp) {
-            mergeInto[prop] = mergeFrom[prop];
-          } else if (util.isObject(mergeInto[prop]) && util.isObject(mergeFrom[prop]) && !isDeferredFunc) {
-            util.extendDeep(mergeInto[prop], mergeFrom[prop], depth - 1);
-          } else if (util.isPromise(mergeFrom[prop])) {
-            mergeInto[prop] = mergeFrom[prop];
-          } else if (mergeFrom[prop] && typeof mergeFrom[prop] === "object") {
-            mergeInto[prop] = util.cloneDeep(mergeFrom[prop], depth - 1);
-          } else if (Object.getOwnPropertyDescriptor(Object(mergeFrom), prop)) {
-            Object.defineProperty(mergeInto, prop, Object.getOwnPropertyDescriptor(Object(mergeFrom), prop));
-          } else {
-            mergeInto[prop] = mergeFrom[prop];
-          }
-        }
-      });
-      return mergeInto;
-    };
-    util.isObject = function(obj) {
-      return obj !== null && typeof obj === "object" && !Array.isArray(obj);
-    };
-    util.isPromise = function(obj) {
-      return Object.prototype.toString.call(obj) === "[object Promise]";
-    };
-    util.initParam = function(paramName, defaultValue) {
-      var t = this;
-      var value = util.getCmdLineArg(paramName) || process.env[paramName] || defaultValue;
-      env[paramName] = value;
-      return value;
-    };
-    util.getCmdLineArg = function(searchFor) {
-      var cmdLineArgs = process.argv.slice(2, process.argv.length), argName = "--" + searchFor + "=";
-      for (var argvIt = 0; argvIt < cmdLineArgs.length; argvIt++) {
-        if (cmdLineArgs[argvIt].indexOf(argName) === 0) {
-          return cmdLineArgs[argvIt].substr(argName.length);
-        }
-      }
-      return false;
-    };
-    util.getEnv = function(varName) {
-      return env[varName];
-    };
-    util.getRegExpFlags = function(re) {
-      var flags = "";
-      re.global && (flags += "g");
-      re.ignoreCase && (flags += "i");
-      re.multiline && (flags += "m");
-      return flags;
-    };
-    util.toObject = function(config3) {
-      return JSON.parse(JSON.stringify(config3 || this));
-    };
-    util.runStrictnessChecks = function(config3) {
-      var sources = config3.util.getConfigSources();
-      var sourceFilenames = sources.map(function(src2) {
-        return Path.basename(src2.name);
-      });
-      NODE_ENV.forEach(function(env2) {
-        var anyFilesMatchEnv = sourceFilenames.some(function(filename) {
-          return filename.match(env2);
-        });
-        if (env2 && env2 !== "development" && !anyFilesMatchEnv) {
-          _warnOrThrow(NODE_ENV_VAR_NAME + " value of '" + env2 + "' did not match any deployment config file names.");
-        }
-        if (env2 === "default" || env2 === "local") {
-          _warnOrThrow(NODE_ENV_VAR_NAME + " value of '" + env2 + "' is ambiguous.");
-        }
-      });
-      var anyFilesMatchInstance = sourceFilenames.some(function(filename) {
-        return filename.match(APP_INSTANCE);
-      });
-      if (APP_INSTANCE && !anyFilesMatchInstance) {
-        _warnOrThrow("NODE_APP_INSTANCE value of '" + APP_INSTANCE + "' did not match any instance config file names.");
-      }
-      function _warnOrThrow(msg2) {
-        var beStrict = process.env.NODE_CONFIG_STRICT_MODE;
-        var prefix = beStrict ? "FATAL: " : "WARNING: ";
-        var seeURL = "See https://github.com/lorenwest/node-config/wiki/Strict-Mode";
-        console.error(prefix + msg2);
-        console.error(prefix + seeURL);
-        if (["true", "1"].indexOf(beStrict) >= 0) {
-          throw new Error(prefix + msg2 + " " + seeURL);
-        }
-      }
-    };
-    var config2 = module2.exports = new Config();
-    util.stripComments = Parser.stripComments;
-    util.stripYamlComments = Parser.stripYamlComments;
-    var showWarnings = !util.initParam("SUPPRESS_NO_CONFIG_WARNING");
-    if (showWarnings && Object.keys(config2).length === 0) {
-      console.error("WARNING: No configurations found in configuration directory:" + CONFIG_DIR);
-      console.error("WARNING: To disable this warning set SUPPRESS_NO_CONFIG_WARNING in the environment.");
-    }
   }
 });
 
@@ -28566,7 +27602,6 @@ if (typeof HTMLElement === "function") {
 // .svelte-kit/output/server/app.js
 var import_cookie = __toModule(require_cookie());
 var import_supabase_js = __toModule(require_main5());
-var import_config = __toModule(require_config());
 var import_free_brands_svg_icons = __toModule(require_free_brands_svg_icons());
 var import_react_image_file_resizer = __toModule(require_build());
 var css$5 = {
@@ -28626,8 +27661,8 @@ function set_paths(paths) {
 }
 function set_prerendering(value) {
 }
-var SUPABASE_URL$1 = import_config.default.get("supabase.url");
-var SUPABASE_SERVICE_KEY = import_config.default.get("supabase.serviceKey");
+var SUPABASE_URL$1 = "https://vqqjrxggizczqfdfthzl.supabase.co";
+var SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaWF0IjoxNjIwMDUxMzYwLCJleHAiOjE5MzU2MjczNjB9.qWQY2E5ZHZsypQ-mMpiTHa0dYmTVcsn0D2_ptZ8wbYc";
 var supabase = new import_supabase_js.SupabaseClient(SUPABASE_URL$1, SUPABASE_SERVICE_KEY);
 async function handle({request, render: render2}) {
   var _a, _b, _c, _d;
@@ -28668,9 +27703,9 @@ function init(settings) {
     amp: false,
     dev: false,
     entry: {
-      file: "/./_app/start-f27c62c6.js",
+      file: "/./_app/start-5d7b62f9.js",
       css: ["/./_app/assets/start-0826e215.css"],
-      js: ["/./_app/start-f27c62c6.js", "/./_app/chunks/vendor-8204ef98.js", "/./_app/chunks/preload-helper-9f12a5fd.js", "/./_app/chunks/singletons-bb9012b7.js"]
+      js: ["/./_app/start-5d7b62f9.js", "/./_app/chunks/vendor-5eacb50f.js", "/./_app/chunks/preload-helper-9f12a5fd.js", "/./_app/chunks/singletons-bb9012b7.js"]
     },
     fetched: void 0,
     floc: false,
@@ -28775,7 +27810,7 @@ var module_lookup = {
     return index;
   })
 };
-var metadata_lookup = {"src/routes/__layout.svelte": {"entry": "/./_app/pages/__layout.svelte-3a1ff6d6.js", "css": ["/./_app/assets/pages/__layout.svelte-e2d001d5.css"], "js": ["/./_app/pages/__layout.svelte-3a1ff6d6.js", "/./_app/chunks/vendor-8204ef98.js", "/./_app/chunks/singletons-bb9012b7.js"], "styles": null}, ".svelte-kit/build/components/error.svelte": {"entry": "/./_app/error.svelte-f25aa897.js", "css": [], "js": ["/./_app/error.svelte-f25aa897.js", "/./_app/chunks/vendor-8204ef98.js"], "styles": null}, "src/routes/index.svelte": {"entry": "/./_app/pages/index.svelte-2d1f0b2f.js", "css": [], "js": ["/./_app/pages/index.svelte-2d1f0b2f.js", "/./_app/chunks/vendor-8204ef98.js"], "styles": null}, "src/routes/schedules-links/index.svelte": {"entry": "/./_app/pages/schedules-links/index.svelte-4b574921.js", "css": [], "js": ["/./_app/pages/schedules-links/index.svelte-4b574921.js", "/./_app/chunks/vendor-8204ef98.js", "/./_app/chunks/about-lw-image-4b0184ad.js"], "styles": null}, "src/routes/announcements/index.svelte": {"entry": "/./_app/pages/announcements/index.svelte-482fd831.js", "css": [], "js": ["/./_app/pages/announcements/index.svelte-482fd831.js", "/./_app/chunks/vendor-8204ef98.js"], "styles": null}, "src/routes/win-skittles/index.svelte": {"entry": "/./_app/pages/win-skittles/index.svelte-8a7e2e37.js", "css": ["/./_app/assets/pages/win-skittles/index.svelte-c11a69fe.css"], "js": ["/./_app/pages/win-skittles/index.svelte-8a7e2e37.js", "/./_app/chunks/vendor-8204ef98.js"], "styles": null}, "src/routes/extra-info/index.svelte": {"entry": "/./_app/pages/extra-info/index.svelte-17056cf2.js", "css": [], "js": ["/./_app/pages/extra-info/index.svelte-17056cf2.js", "/./_app/chunks/vendor-8204ef98.js", "/./_app/chunks/about-lw-image-4b0184ad.js"], "styles": null}, "src/routes/dashboard/index.svelte": {"entry": "/./_app/pages/dashboard/index.svelte-6f29802b.js", "css": ["/./_app/assets/pages/dashboard/index.svelte-8bb9f200.css"], "js": ["/./_app/pages/dashboard/index.svelte-6f29802b.js", "/./_app/chunks/preload-helper-9f12a5fd.js", "/./_app/chunks/vendor-8204ef98.js"], "styles": null}};
+var metadata_lookup = {"src/routes/__layout.svelte": {"entry": "/./_app/pages/__layout.svelte-bde6fdd7.js", "css": ["/./_app/assets/pages/__layout.svelte-d4edce92.css"], "js": ["/./_app/pages/__layout.svelte-bde6fdd7.js", "/./_app/chunks/vendor-5eacb50f.js", "/./_app/chunks/singletons-bb9012b7.js", "/./_app/chunks/util-447b5f92.js"], "styles": null}, ".svelte-kit/build/components/error.svelte": {"entry": "/./_app/error.svelte-527cc6d1.js", "css": [], "js": ["/./_app/error.svelte-527cc6d1.js", "/./_app/chunks/vendor-5eacb50f.js"], "styles": null}, "src/routes/index.svelte": {"entry": "/./_app/pages/index.svelte-d0b3cd43.js", "css": [], "js": ["/./_app/pages/index.svelte-d0b3cd43.js", "/./_app/chunks/vendor-5eacb50f.js"], "styles": null}, "src/routes/schedules-links/index.svelte": {"entry": "/./_app/pages/schedules-links/index.svelte-3652ceba.js", "css": [], "js": ["/./_app/pages/schedules-links/index.svelte-3652ceba.js", "/./_app/chunks/vendor-5eacb50f.js"], "styles": null}, "src/routes/announcements/index.svelte": {"entry": "/./_app/pages/announcements/index.svelte-fa6c0a4b.js", "css": [], "js": ["/./_app/pages/announcements/index.svelte-fa6c0a4b.js", "/./_app/chunks/vendor-5eacb50f.js"], "styles": null}, "src/routes/win-skittles/index.svelte": {"entry": "/./_app/pages/win-skittles/index.svelte-7a8f46ae.js", "css": ["/./_app/assets/pages/win-skittles/index.svelte-c11a69fe.css"], "js": ["/./_app/pages/win-skittles/index.svelte-7a8f46ae.js", "/./_app/chunks/vendor-5eacb50f.js"], "styles": null}, "src/routes/extra-info/index.svelte": {"entry": "/./_app/pages/extra-info/index.svelte-550cf720.js", "css": [], "js": ["/./_app/pages/extra-info/index.svelte-550cf720.js", "/./_app/chunks/vendor-5eacb50f.js"], "styles": null}, "src/routes/dashboard/index.svelte": {"entry": "/./_app/pages/dashboard/index.svelte-23e2bb24.js", "css": ["/./_app/assets/pages/dashboard/index.svelte-947dd7c3.css"], "js": ["/./_app/pages/dashboard/index.svelte-23e2bb24.js", "/./_app/chunks/preload-helper-9f12a5fd.js", "/./_app/chunks/vendor-5eacb50f.js", "/./_app/chunks/util-447b5f92.js"], "styles": null}};
 async function load_component(file) {
   return {
     module: await module_lookup[file](),
@@ -28831,25 +27866,20 @@ var GoogleLogin = create_ssr_component(($$result, $$props, $$bindings, slots) =>
 });
 var logo = "/_app/assets/logo.f2ec7066.png";
 var css$4 = {
-  code: "nav.svelte-11jtwr9>button.svelte-11jtwr9:hover{--tw-bg-opacity:1;background-color:rgba(196,197,212,var(--tw-bg-opacity))}",
-  map: `{"version":3,"file":"NavBar.svelte","sources":["NavBar.svelte"],"sourcesContent":["<script lang=\\"ts\\" context=\\"module\\">var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\\n    return new (P || (P = Promise))(function (resolve, reject) {\\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\\n        function rejected(value) { try { step(generator[\\"throw\\"](value)); } catch (e) { reject(e); } }\\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\\n    });\\n};\\nexport function load({ session }) {\\n    return __awaiter(this, void 0, void 0, function* () {\\n        console.log('bruh', session);\\n        console.log(session.auth);\\n        return {\\n            props: {\\n                auth: session.auth\\n            }\\n        };\\n    });\\n}\\n</script>\\n<script lang=\\"ts\\">import { goto } from \\"$app/navigation\\";\\nimport Login from \\"./GoogleLogin.svelte\\";\\nimport logo from \\"../assets/logo.png\\";\\nexport let loggedIn = false;\\n</script>\\n\\n\\n<nav class=\\"w-full bg-light-blue flex flex-row h-20 fixed top-0\\">\\n  <img src={logo} on:click={()=>{goto('/')}} alt=\\"Learning Works Logo\\" class=\\"cursor-pointer\\"/>\\n  <button class=\\"flex-1\\" on:click={()=>goto('/announcements')}>\\n    Announcements\\n  </button>  \\n  <button class=\\"flex-1\\" on:click={()=>goto('/schedules-links')}>\\n      Schedule and Links\\n    </button>\\n  <button class=\\"flex-1\\" on:click={()=>goto('/win-skittles')}>\\n      Win Skittles\\n    </button>\\n    <button class=\\"flex-1\\" on:click={()=>goto('/extra-info')}>\\n      Extra Info\\n    </button>\\n    {#if !loggedIn}\\n      <Login/>\\n    {:else}\\n    <button class=\\"flex-1\\" on:click={()=>goto('/dashboard')}>\\n      Dashboard\\n    </button>\\n    {/if}\\n</nav>\\n\\n<style style lang=\\"postcss\\">nav>div{--tw-text-opacity:1;color:rgba(0,0,0,var(--tw-text-opacity));font-weight:400;margin:auto;text-align:center;transition-duration:.15s;transition-duration:.7s;transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1)}nav>button:hover{--tw-bg-opacity:1;background-color:rgba(196,197,212,var(--tw-bg-opacity))}</style>"],"names":[],"mappings":"AAmD2Q,kBAAG,CAAC,qBAAM,MAAM,CAAC,gBAAgB,CAAC,CAAC,iBAAiB,KAAK,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,IAAI,eAAe,CAAC,CAAC,CAAC"}`
+  code: "nav.svelte-177bo1n>a.svelte-177bo1n.svelte-177bo1n{display:flex;height:100%;width:100%}nav.svelte-177bo1n>a.svelte-177bo1n.svelte-177bo1n,nav.svelte-177bo1n>a.svelte-177bo1n>span.svelte-177bo1n{margin:auto}nav.svelte-177bo1n>a.svelte-177bo1n.svelte-177bo1n:hover{--tw-bg-opacity:1;background-color:rgba(196,197,212,var(--tw-bg-opacity))}",
+  map: `{"version":3,"file":"NavBar.svelte","sources":["NavBar.svelte"],"sourcesContent":["<script lang=\\"ts\\" context=\\"module\\">var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\\n    return new (P || (P = Promise))(function (resolve, reject) {\\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\\n        function rejected(value) { try { step(generator[\\"throw\\"](value)); } catch (e) { reject(e); } }\\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\\n    });\\n};\\nexport function load({ session }) {\\n    return __awaiter(this, void 0, void 0, function* () {\\n        console.log('bruh', session);\\n        console.log(session.auth);\\n        return {\\n            props: {\\n                auth: session.auth\\n            }\\n        };\\n    });\\n}\\n</script>\\n<script lang=\\"ts\\">import { goto } from \\"$app/navigation\\";\\nimport Login from \\"./GoogleLogin.svelte\\";\\nimport logo from \\"../assets/logo.png\\";\\nexport let loggedIn = false;\\n</script>\\n\\n\\n<nav class=\\"w-full bg-light-blue flex flex-row h-20 fixed top-0\\">\\n  <img src={logo} on:click={()=>{goto('/')}} alt=\\"Learning Works Logo\\" class=\\"cursor-pointer\\"/>\\n  <a sveltekit:prefetch href=\\"/announcements\\">\\n      <span>Announcements</span>\\n  </a>\\n  <a sveltekit:prefetch href=\\"/schedules-links\\">\\n      <span>Schedules and Links</span>\\n  </a>\\n  <a sveltekit:prefetch href=\\"/win-skittles\\">\\n      <span>Win Skittles</span>\\n  </a>\\n  <a sveltekit:prefetch href=\\"/extra-info\\">\\n      <span>Extra Info</span>\\n  </a>\\n  {#if !loggedIn}\\n    <Login/>\\n  {:else}\\n    <a sveltekit:prefetch href=\\"/dashboard\\">\\n        <span>Dashboard</span>\\n    </a>\\n  {/if}\\n</nav>\\n\\n<style style lang=\\"postcss\\">nav>div{--tw-text-opacity:1;color:rgba(0,0,0,var(--tw-text-opacity));font-weight:400;margin:auto;text-align:center;transition-duration:.15s;transition-duration:.7s;transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1)}nav>a{display:flex;height:100%;width:100%}nav>a,nav>a>span{margin:auto}nav>a:hover{--tw-bg-opacity:1;background-color:rgba(196,197,212,var(--tw-bg-opacity))}</style>"],"names":[],"mappings":"AAmD2Q,kBAAG,CAAC,+BAAC,CAAC,QAAQ,IAAI,CAAC,OAAO,IAAI,CAAC,MAAM,IAAI,CAAC,kBAAG,CAAC,+BAAC,CAAC,kBAAG,CAAC,gBAAC,CAAC,mBAAI,CAAC,OAAO,IAAI,CAAC,kBAAG,CAAC,+BAAC,MAAM,CAAC,gBAAgB,CAAC,CAAC,iBAAiB,KAAK,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,IAAI,eAAe,CAAC,CAAC,CAAC"}`
 };
 var NavBar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let {loggedIn = false} = $$props;
   if ($$props.loggedIn === void 0 && $$bindings.loggedIn && loggedIn !== void 0)
     $$bindings.loggedIn(loggedIn);
   $$result.css.add(css$4);
-  return `<nav class="${"w-full bg-light-blue flex flex-row h-20 fixed top-0 svelte-11jtwr9"}"><img${add_attribute("src", logo, 0)} alt="${"Learning Works Logo"}" class="${"cursor-pointer"}">
-  <button class="${"flex-1 svelte-11jtwr9"}">Announcements
-  </button>  
-  <button class="${"flex-1 svelte-11jtwr9"}">Schedule and Links
-    </button>
-  <button class="${"flex-1 svelte-11jtwr9"}">Win Skittles
-    </button>
-    <button class="${"flex-1 svelte-11jtwr9"}">Extra Info
-    </button>
-    ${!loggedIn ? `${validate_component(GoogleLogin, "Login").$$render($$result, {}, {}, {})}` : `<button class="${"flex-1 svelte-11jtwr9"}">Dashboard
-    </button>`}
+  return `<nav class="${"w-full bg-light-blue flex flex-row h-20 fixed top-0 svelte-177bo1n"}"><img${add_attribute("src", logo, 0)} alt="${"Learning Works Logo"}" class="${"cursor-pointer"}">
+  <a sveltekit:prefetch href="${"/announcements"}" class="${"svelte-177bo1n"}"><span class="${"svelte-177bo1n"}">Announcements</span></a>
+  <a sveltekit:prefetch href="${"/schedules-links"}" class="${"svelte-177bo1n"}"><span class="${"svelte-177bo1n"}">Schedules and Links</span></a>
+  <a sveltekit:prefetch href="${"/win-skittles"}" class="${"svelte-177bo1n"}"><span class="${"svelte-177bo1n"}">Win Skittles</span></a>
+  <a sveltekit:prefetch href="${"/extra-info"}" class="${"svelte-177bo1n"}"><span class="${"svelte-177bo1n"}">Extra Info</span></a>
+  ${!loggedIn ? `${validate_component(GoogleLogin, "Login").$$render($$result, {}, {}, {})}` : `<a sveltekit:prefetch href="${"/dashboard"}" class="${"svelte-177bo1n"}"><span class="${"svelte-177bo1n"}">Dashboard</span></a>`}
 </nav>`;
 });
 var css$3 = {
@@ -29088,11 +28118,19 @@ var index$5 = /* @__PURE__ */ Object.freeze({
   "default": Routes
 });
 var about_img = "/_app/assets/about-lw-image.f666d49c.png";
+var schedule = "/_app/assets/schedule.14cae710.jpg";
+var meeting = "/_app/assets/meeting.1393dd4d.jpg";
+var classroom = "/_app/assets/class.42b8f411.jpg";
+var passing = "/_app/assets/passing.f129229b.jpg";
+var advisory = "/_app/assets/advisory.9e5bfde1.jpg";
+var lunch = "/_app/assets/lunch.b684865f.jpg";
 var Schedules_links = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div><h1>About LW</h1>
-  <div class="${"grid grid-cols-2"}"><img${add_attribute("src", about_img, 0)}>
-    <div class="${"px-4"}">&quot;LearningWorks is a unique public-private partnership between Minneapolis Public Schools and The Blake School. Since 2000, LearningWorks has prepared students to thrive in college and offered real-world teaching expereinces to high school and college students.&quot;
-    </div></div></div>`;
+  return `<div class="${"flex flex-col justify-center w-5/6 h-1/6"}"><img${add_attribute("src", schedule, 0)} alt="${"Schedule"}" class="${"w-5/6 h-1/6"}">
+  <img${add_attribute("src", meeting, 0)} alt="${"Meeting"}" class="${"w-5/6 h-1/6"}">
+  <img${add_attribute("src", classroom, 0)} alt="${"Classroom"}" class="${"w-5/6 h-1/6"}">
+  <img${add_attribute("src", passing, 0)} alt="${"Passing"}" class="${"w-5/6 h-1/6"}">
+  <img${add_attribute("src", advisory, 0)} alt="${"Advisory"}" class="${"w-5/6 h-1/6"}">
+  <img${add_attribute("src", lunch, 0)} alt="${"Lunch"}" class="${"w-5/6 h-1/6"}"></div>`;
 });
 var index$4 = /* @__PURE__ */ Object.freeze({
   __proto__: null,
@@ -29112,7 +28150,7 @@ var index$3 = /* @__PURE__ */ Object.freeze({
 var skittles = "/_app/assets/skittles.e9947294.jpg";
 var css$2 = {
   code: ".svelte-191jj0t.svelte-191jj0t.svelte-191jj0t{--tw-text-opacity:1;color:rgba(57,76,106,var(--tw-text-opacity));text-align:center}button.svelte-191jj0t.svelte-191jj0t.svelte-191jj0t{--tw-bg-opacity:1;--tw-text-opacity:1;background-color:rgba(57,76,106,var(--tw-bg-opacity));border-radius:.5rem;color:rgba(255,255,255,var(--tw-text-opacity));margin:auto;padding:.5rem}div.svelte-191jj0t>.svelte-191jj0t:not([hidden])~.svelte-191jj0t:not([hidden]){--tw-space-y-reverse:0;margin-bottom:calc(1rem*var(--tw-space-y-reverse));margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)))}div.svelte-191jj0t.svelte-191jj0t.svelte-191jj0t{padding:2rem}#skittles.svelte-191jj0t.svelte-191jj0t.svelte-191jj0t{font-size:1.125rem;font-weight:700;line-height:1.75rem}#skittles.svelte-191jj0t.svelte-191jj0t.svelte-191jj0t,#skittles.svelte-191jj0t h1.svelte-191jj0t.svelte-191jj0t{--tw-text-opacity:1;color:rgba(255,255,255,var(--tw-text-opacity))}h1.svelte-191jj0t.svelte-191jj0t.svelte-191jj0t{font-size:2.25rem;line-height:2.5rem}h4.svelte-191jj0t.svelte-191jj0t.svelte-191jj0t{font-size:1.5rem;font-weight:700;line-height:2rem}",
-  map: `{"version":3,"file":"index.svelte","sources":["index.svelte"],"sourcesContent":["<script lang='ts'>import skittles from '../../assets/skittles.jpg';\\n</script>\\n\\n\\n<div id=\\"skittles\\" class=\\"h-1/2 flex flex-col\\" style=\\"background: url({skittles})\\">\\n  <h1>WIN THE SKITTLES COUNT FOR YOUR COLOR FAM AND WIN A PRIZE</h1>\\n  <button>PODs</button>\\n  <button>Recruit New Students</button>\\n  <button>Skittles Count</button>\\n</div>\\n<div>\\n  <h4>Problems of the Day (PODs)!</h4>\\n  <p>Each problem that you answer correctly wins oyu one skittle for your color fam. The PODs will be revealed during the ASM skit, so listen up! Ask your advisors, teachers, or friends for help on any of the PODs!</p>\\n  <button>Submit Today's PODs</button>\\n</div>\\n<div class=\\"flex-row\\">\\n  <div>\\n    <h4>Recruit Students for Skitkkkkkkkkkkkltles!!</h4>\\n  </div>\\n  <img src=\\"\\" alt=\\"A group of people doing the limbo\\"/>\\n</div>\\n\\n<style style lang='postcss'>*{--tw-text-opacity:1;color:rgba(57,76,106,var(--tw-text-opacity));text-align:center}button{--tw-bg-opacity:1;--tw-text-opacity:1;background-color:rgba(57,76,106,var(--tw-bg-opacity));border-radius:.5rem;color:rgba(255,255,255,var(--tw-text-opacity));margin:auto;padding:.5rem}div>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-bottom:calc(1rem*var(--tw-space-y-reverse));margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)))}div{padding:2rem}#skittles{font-size:1.125rem;font-weight:700;line-height:1.75rem}#skittles,#skittles h1{--tw-text-opacity:1;color:rgba(255,255,255,var(--tw-text-opacity))}h1{font-size:2.25rem;line-height:2.5rem}h4{font-size:1.5rem;font-weight:700;line-height:2rem}</style>"],"names":[],"mappings":"AAsB4B,6CAAC,CAAC,kBAAkB,CAAC,CAAC,MAAM,KAAK,EAAE,CAAC,EAAE,CAAC,GAAG,CAAC,IAAI,iBAAiB,CAAC,CAAC,CAAC,WAAW,MAAM,CAAC,mDAAM,CAAC,gBAAgB,CAAC,CAAC,kBAAkB,CAAC,CAAC,iBAAiB,KAAK,EAAE,CAAC,EAAE,CAAC,GAAG,CAAC,IAAI,eAAe,CAAC,CAAC,CAAC,cAAc,KAAK,CAAC,MAAM,KAAK,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,IAAI,iBAAiB,CAAC,CAAC,CAAC,OAAO,IAAI,CAAC,QAAQ,KAAK,CAAC,kBAAG,gBAAC,KAAK,CAAC,MAAM,CAAC,CAAC,gBAAC,KAAK,CAAC,MAAM,CAAC,CAAC,CAAC,qBAAqB,CAAC,CAAC,cAAc,KAAK,IAAI,CAAC,IAAI,oBAAoB,CAAC,CAAC,CAAC,WAAW,KAAK,IAAI,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,oBAAoB,CAAC,CAAC,CAAC,CAAC,gDAAG,CAAC,QAAQ,IAAI,CAAC,sDAAS,CAAC,UAAU,QAAQ,CAAC,YAAY,GAAG,CAAC,YAAY,OAAO,CAAC,sDAAS,CAAC,wBAAS,CAAC,gCAAE,CAAC,kBAAkB,CAAC,CAAC,MAAM,KAAK,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,IAAI,iBAAiB,CAAC,CAAC,CAAC,+CAAE,CAAC,UAAU,OAAO,CAAC,YAAY,MAAM,CAAC,+CAAE,CAAC,UAAU,MAAM,CAAC,YAAY,GAAG,CAAC,YAAY,IAAI,CAAC"}`
+  map: `{"version":3,"file":"index.svelte","sources":["index.svelte"],"sourcesContent":["<script lang='ts'>import skittles from '../../assets/skittles.jpg';\\n</script>\\n\\n\\n<div id=\\"skittles\\" class=\\"h-1/2 flex flex-col\\" style=\\"background: url({skittles})\\">\\n  <h1>WIN THE SKITTLES COUNT FOR YOUR COLOR FAM AND WIN A PRIZE</h1>\\n  <button>PODs</button>\\n  <button>Recruit New Students</button>\\n  <button>Skittles Count</button>\\n</div>\\n<div>\\n  <h4>Problems of the Day (PODs)!</h4>\\n  <p>Each problem that you answer correctly wins you one skittle for your color fam. The PODs will be revealed during the ASM skit, so listen up! Ask your advisors, teachers, or friends for help on any of the PODs!</p>\\n  <button>Submit Today's PODs</button>\\n</div>\\n<div class=\\"flex-row\\">\\n  <div>\\n    <h4>Recruit Students for Skitkkkkkkkkkkkittles!!</h4>\\n  </div>\\n  <img src=\\"\\" alt=\\"A group of people doing the limbo\\"/>\\n</div>\\n\\n<style style lang='postcss'>*{--tw-text-opacity:1;color:rgba(57,76,106,var(--tw-text-opacity));text-align:center}button{--tw-bg-opacity:1;--tw-text-opacity:1;background-color:rgba(57,76,106,var(--tw-bg-opacity));border-radius:.5rem;color:rgba(255,255,255,var(--tw-text-opacity));margin:auto;padding:.5rem}div>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-bottom:calc(1rem*var(--tw-space-y-reverse));margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)))}div{padding:2rem}#skittles{font-size:1.125rem;font-weight:700;line-height:1.75rem}#skittles,#skittles h1{--tw-text-opacity:1;color:rgba(255,255,255,var(--tw-text-opacity))}h1{font-size:2.25rem;line-height:2.5rem}h4{font-size:1.5rem;font-weight:700;line-height:2rem}</style>"],"names":[],"mappings":"AAsB4B,6CAAC,CAAC,kBAAkB,CAAC,CAAC,MAAM,KAAK,EAAE,CAAC,EAAE,CAAC,GAAG,CAAC,IAAI,iBAAiB,CAAC,CAAC,CAAC,WAAW,MAAM,CAAC,mDAAM,CAAC,gBAAgB,CAAC,CAAC,kBAAkB,CAAC,CAAC,iBAAiB,KAAK,EAAE,CAAC,EAAE,CAAC,GAAG,CAAC,IAAI,eAAe,CAAC,CAAC,CAAC,cAAc,KAAK,CAAC,MAAM,KAAK,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,IAAI,iBAAiB,CAAC,CAAC,CAAC,OAAO,IAAI,CAAC,QAAQ,KAAK,CAAC,kBAAG,gBAAC,KAAK,CAAC,MAAM,CAAC,CAAC,gBAAC,KAAK,CAAC,MAAM,CAAC,CAAC,CAAC,qBAAqB,CAAC,CAAC,cAAc,KAAK,IAAI,CAAC,IAAI,oBAAoB,CAAC,CAAC,CAAC,WAAW,KAAK,IAAI,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,oBAAoB,CAAC,CAAC,CAAC,CAAC,gDAAG,CAAC,QAAQ,IAAI,CAAC,sDAAS,CAAC,UAAU,QAAQ,CAAC,YAAY,GAAG,CAAC,YAAY,OAAO,CAAC,sDAAS,CAAC,wBAAS,CAAC,gCAAE,CAAC,kBAAkB,CAAC,CAAC,MAAM,KAAK,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,IAAI,iBAAiB,CAAC,CAAC,CAAC,+CAAE,CAAC,UAAU,OAAO,CAAC,YAAY,MAAM,CAAC,+CAAE,CAAC,UAAU,MAAM,CAAC,YAAY,GAAG,CAAC,YAAY,IAAI,CAAC"}`
 };
 var Win_skittles = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$result.css.add(css$2);
@@ -29121,9 +28159,9 @@ var Win_skittles = create_ssr_component(($$result, $$props, $$bindings, slots) =
   <button class="${"svelte-191jj0t"}">Recruit New Students</button>
   <button class="${"svelte-191jj0t"}">Skittles Count</button></div>
 <div class="${"svelte-191jj0t"}"><h4 class="${"svelte-191jj0t"}">Problems of the Day (PODs)!</h4>
-  <p class="${"svelte-191jj0t"}">Each problem that you answer correctly wins oyu one skittle for your color fam. The PODs will be revealed during the ASM skit, so listen up! Ask your advisors, teachers, or friends for help on any of the PODs!</p>
+  <p class="${"svelte-191jj0t"}">Each problem that you answer correctly wins you one skittle for your color fam. The PODs will be revealed during the ASM skit, so listen up! Ask your advisors, teachers, or friends for help on any of the PODs!</p>
   <button class="${"svelte-191jj0t"}">Submit Today&#39;s PODs</button></div>
-<div class="${"flex-row svelte-191jj0t"}"><div class="${"svelte-191jj0t"}"><h4 class="${"svelte-191jj0t"}">Recruit Students for Skitkkkkkkkkkkkltles!!</h4></div>
+<div class="${"flex-row svelte-191jj0t"}"><div class="${"svelte-191jj0t"}"><h4 class="${"svelte-191jj0t"}">Recruit Students for Skitkkkkkkkkkkkittles!!</h4></div>
   <img src="${""}" alt="${"A group of people doing the limbo"}" class="${"svelte-191jj0t"}">
 </div>`;
 });
@@ -29147,8 +28185,8 @@ var DividingBar = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   return `<div class="${"border-t-2 h-0 bg-gray-400"}"></div>`;
 });
 var css$1 = {
-  code: "main.svelte-19njida{display:grid;grid-template-columns:100%}.box.svelte-19njida{--tw-border-opacity:1;border:2px solid rgba(96,165,250,var(--tw-border-opacity));border-radius:.5rem;margin:1rem}@media(min-width:1024px){main.svelte-19njida{grid-template-columns:65% 35%}}",
-  map: `{"version":3,"file":"index.svelte","sources":["index.svelte"],"sourcesContent":["<script context=\\"module\\" lang=\\"ts\\">var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\\n    return new (P || (P = Promise))(function (resolve, reject) {\\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\\n        function rejected(value) { try { step(generator[\\"throw\\"](value)); } catch (e) { reject(e); } }\\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\\n    });\\n};\\n/** @type {import('@sveltejs/kit').Load}*/\\nexport function load({ session }) {\\n    return __awaiter(this, void 0, void 0, function* () {\\n        console.log('user logged in:', session.auth);\\n        if (!session.auth) {\\n            return {\\n                status: 302,\\n                redirect: '/'\\n            };\\n        }\\n        return {\\n            status: 200\\n        };\\n    });\\n}\\n</script>\\n<script>\\n  import { onMount } from 'svelte';\\n  import DividingBar from '../../components/DividingBar.svelte';\\n\\n  let editor;\\n  \\n  onMount(async () => {\\n    // Dynamically load editor on client side\\n    // because the Editor requires access to window\\n    // globals and such\\n    editor = (await import('../../components/Editor.svelte')).default;\\n  })\\n\\n  function onEditorSave(bruh) {\\n    console.log('bruh', bruh);\\n  }\\n</script>\\n\\n<main class=\\"grid grid-flow-row\\">\\n  <div class=\\"box\\">\\n    <h3 class=\\"text-center text-3xl\\">Make A New Announcement</h3>\\n    <DividingBar />\\n    <svelte:component this={editor} on:save={onEditorSave}/>\\n  </div>\\n  <div class=\\"box\\">\\n    <h3 class=\\"text-center text-3xl\\">Add New User</h3>\\n    <DividingBar />\\n  </div>\\n</main>\\n\\n<style style lang='postcss'>main{display:grid;grid-template-columns:100%}.box{--tw-border-opacity:1;border:2px solid rgba(96,165,250,var(--tw-border-opacity));border-radius:.5rem;margin:1rem}@media (min-width:1024px){main{grid-template-columns:65% 35%}}</style>"],"names":[],"mappings":"AAuD4B,mBAAI,CAAC,QAAQ,IAAI,CAAC,sBAAsB,IAAI,CAAC,mBAAI,CAAC,oBAAoB,CAAC,CAAC,OAAO,GAAG,CAAC,KAAK,CAAC,KAAK,EAAE,CAAC,GAAG,CAAC,GAAG,CAAC,IAAI,mBAAmB,CAAC,CAAC,CAAC,cAAc,KAAK,CAAC,OAAO,IAAI,CAAC,MAAM,AAAC,WAAW,MAAM,CAAC,CAAC,mBAAI,CAAC,sBAAsB,GAAG,CAAC,GAAG,CAAC,CAAC"}`
+  code: "main.svelte-1j7p102{display:grid;grid-template-columns:100%}.box.svelte-1j7p102{--tw-border-opacity:1;border:2px solid rgba(96,165,250,var(--tw-border-opacity));border-radius:.5rem;margin:1rem}#add-user-textbox.svelte-1j7p102{height:auto;margin:1rem;resize:none;width:calc(100% - 2rem)}@media(min-width:1024px){main.svelte-1j7p102{grid-template-columns:65% 35%}}",
+  map: `{"version":3,"file":"index.svelte","sources":["index.svelte"],"sourcesContent":["<script context=\\"module\\" lang=\\"ts\\">var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\\n    return new (P || (P = Promise))(function (resolve, reject) {\\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\\n        function rejected(value) { try { step(generator[\\"throw\\"](value)); } catch (e) { reject(e); } }\\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\\n    });\\n};\\n/** @type {import('@sveltejs/kit').Load}*/\\nexport function load({ session }) {\\n    return __awaiter(this, void 0, void 0, function* () {\\n        console.log('user logged in:', session.auth);\\n        if (!session.auth) {\\n            return {\\n                status: 302,\\n                redirect: '/'\\n            };\\n        }\\n        return {\\n            status: 200\\n        };\\n    });\\n}\\n</script>\\n<script>\\n  import { onMount } from 'svelte';\\n  import DividingBar from '../../components/DividingBar.svelte';\\n  import { post } from '../../components/util';\\n\\n  // post();\\n\\n  let editor;\\n  \\n  onMount(async () => {\\n    // Dynamically load editor on client side\\n    // because the Editor requires access to window\\n    // globals and such\\n    editor = (await import('../../components/Editor.svelte')).default;\\n  })\\n\\n  function onEditorSave(bruh) {\\n    console.log('bruh', bruh);\\n  }\\n</script>\\n\\n<main class=\\"grid grid-flow-row\\">\\n  <div class=\\"box\\">\\n    <h3 class=\\"text-center text-3xl\\">Make A New Announcement</h3>\\n    <DividingBar />\\n    <svelte:component this={editor} on:save={onEditorSave}/>\\n  </div>\\n  <div class=\\"box\\">\\n    <h3 class=\\"text-center text-3xl\\">Add New User</h3>\\n    <DividingBar />\\n    <div>\\n      <textarea id=\\"add-user-textbox\\"></textarea>\\n    </div>\\n  </div>\\n</main>\\n\\n<style style lang='postcss'>main{display:grid;grid-template-columns:100%}.box{--tw-border-opacity:1;border:2px solid rgba(96,165,250,var(--tw-border-opacity));border-radius:.5rem;margin:1rem}#add-user-textbox{height:auto;margin:1rem;resize:none;width:calc(100% - 2rem)}@media (min-width:1024px){main{grid-template-columns:65% 35%}}</style>"],"names":[],"mappings":"AA6D4B,mBAAI,CAAC,QAAQ,IAAI,CAAC,sBAAsB,IAAI,CAAC,mBAAI,CAAC,oBAAoB,CAAC,CAAC,OAAO,GAAG,CAAC,KAAK,CAAC,KAAK,EAAE,CAAC,GAAG,CAAC,GAAG,CAAC,IAAI,mBAAmB,CAAC,CAAC,CAAC,cAAc,KAAK,CAAC,OAAO,IAAI,CAAC,gCAAiB,CAAC,OAAO,IAAI,CAAC,OAAO,IAAI,CAAC,OAAO,IAAI,CAAC,MAAM,KAAK,IAAI,CAAC,CAAC,CAAC,IAAI,CAAC,CAAC,MAAM,AAAC,WAAW,MAAM,CAAC,CAAC,mBAAI,CAAC,sBAAsB,GAAG,CAAC,GAAG,CAAC,CAAC"}`
 };
 var __awaiter = function(thisArg, _arguments, P, generator) {
   function adopt(value) {
@@ -29194,11 +28232,12 @@ var Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     })).default;
   });
   $$result.css.add(css$1);
-  return `<main class="${"grid grid-flow-row svelte-19njida"}"><div class="${"box svelte-19njida"}"><h3 class="${"text-center text-3xl"}">Make A New Announcement</h3>
+  return `<main class="${"grid grid-flow-row svelte-1j7p102"}"><div class="${"box svelte-1j7p102"}"><h3 class="${"text-center text-3xl"}">Make A New Announcement</h3>
     ${validate_component(DividingBar, "DividingBar").$$render($$result, {}, {}, {})}
     ${validate_component(editor || missing_component, "svelte:component").$$render($$result, {}, {}, {})}</div>
-  <div class="${"box svelte-19njida"}"><h3 class="${"text-center text-3xl"}">Add New User</h3>
-    ${validate_component(DividingBar, "DividingBar").$$render($$result, {}, {}, {})}</div>
+  <div class="${"box svelte-1j7p102"}"><h3 class="${"text-center text-3xl"}">Add New User</h3>
+    ${validate_component(DividingBar, "DividingBar").$$render($$result, {}, {}, {})}
+    <div><textarea id="${"add-user-textbox"}" class="${"svelte-1j7p102"}"></textarea></div></div>
 </main>`;
 });
 var index = /* @__PURE__ */ Object.freeze({

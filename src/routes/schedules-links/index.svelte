@@ -8,11 +8,36 @@
   import lunch from '../../assets/link-images/lunch.jpg';
 </script>
 
-<div class="flex flex-col justify-center w-5/6 h-1/6" >
-  <img src={schedule} alt="Schedule" class="w-5/6 h-1/6" />
-  <img src={meeting} alt="Meeting" class="w-5/6 h-1/6" />
-  <img src={classroom} alt="Classroom" class="w-5/6 h-1/6" />
-  <img src={passing} alt="Passing" class="w-5/6 h-1/6" />
-  <img src={advisory} alt="Advisory" class="w-5/6 h-1/6" />
-  <img src={lunch} alt="Lunch" class="w-5/6 h-1/6" />
+<div class="flex flex-col justify-center parent" >
+  <div style="background-image: url('{schedule}')">
+    <button>Skedj</button>
+  </div>
+  <!-- <img src={schedule} alt="Schedule" /> -->
+  <div style="background-image: url('{meeting}')">
+    <button>All School Meeting</button>
+  </div>
+  <div style="background-image: url('{classroom}')">
+    <button>Class Links</button>
+  </div>
+  <div style="background-image: url('{passing}')">
+    <button>Passing Time</button>
+  </div>
+  <div style="background-image: url('{advisory}')">
+    <button>Advisory</button>
+  </div>
+  <div style="background-image: url('{lunch}')">
+    <button>Lunch Groups</button>
+  </div>
 </div>
+
+<style style lang="postcss">
+  .parent > div {
+    @apply m-auto flex flex-col w-5/6 h-64;
+  }
+  .parent > div > button {
+    @apply m-auto bg-white rounded-lg px-4 py-1;
+  }
+  .parent > div:hover{
+    @apply opacity-70;
+  }
+</style>

@@ -32,6 +32,24 @@
   function onEditorSave(bruh) {
     console.log('bruh', bruh);
   }
+  
+  let userEmails;
+  function addUsers() {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    console.log(userEmails);
+    if (!userEmails) return;
+    // seperate emails by spaces
+    let emails = userEmails.split(' ');
+    for (const email of emails) {
+      if (!re.test(String(email).toLowerCase())) {
+        console.error('Invalid Email');
+        return;
+      }
+    }
+    post('add-user', {
+      emails
+    });
+  }
 </script>
 
 <main class="grid grid-flow-row">
@@ -43,8 +61,9 @@
   <div class="box">
     <h3 class="text-center text-3xl">Add New User</h3>
     <DividingBar />
-    <div>
-      <textarea id="add-user-textbox"></textarea>
+    <div class="flex flex-col">
+      <textarea id="add-user-textbox" bind:value={userEmails}></textarea>
+      <button on:click={() => addUsers()} class="">Add Users</button>
     </div>
   </div>
 </main>
