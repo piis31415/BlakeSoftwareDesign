@@ -4,7 +4,7 @@
  * @param {object} data data in the form of a js object
  * @returns server-sent json
  */
-export async function post(path: string, data: object) {
+export async function post(path: string, data: Record<string,unknown>): Promise<Record<string,unknown>> {
   // console.log(JSON.stringify(data));
   return (await (await fetch(`http://localhost:3000/${path}`, {
     method: 'POST',

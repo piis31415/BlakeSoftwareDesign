@@ -19,32 +19,38 @@
 
 <nav class="w-full bg-light-blue flex flex-row h-20 fixed top-0">
   <img src={logo} on:click={()=>{goto('/')}} alt="Learning Works Logo" class="cursor-pointer"/>
-  <button class="flex-1" on:click={()=>goto('/announcements')}>
-    Announcements
-  </button>  
-  <button class="flex-1" on:click={()=>goto('/schedules-links')}>
-      Schedule and Links
-    </button>
-  <button class="flex-1" on:click={()=>goto('/win-skittles')}>
-      Win Skittles
-    </button>
-    <button class="flex-1" on:click={()=>goto('/extra-info')}>
-      Extra Info
-    </button>
-    {#if !loggedIn}
-      <Login/>
-    {:else}
-    <button class="flex-1" on:click={()=>goto('/dashboard')}>
-      Dashboard
-    </button>
-    {/if}
+  <a sveltekit:prefetch href="/announcements">
+      <span>Announcements</span>
+  </a>
+  <a sveltekit:prefetch href="/schedules-links">
+      <span>Schedules and Links</span>
+  </a>
+  <a sveltekit:prefetch href="/win-skittles">
+      <span>Win Skittles</span>
+  </a>
+  <a sveltekit:prefetch href="/extra-info">
+      <span>Extra Info</span>
+  </a>
+  {#if !loggedIn}
+    <Login/>
+  {:else}
+    <a sveltekit:prefetch href="/dashboard">
+        <span>Dashboard</span>
+    </a>
+  {/if}
 </nav>
 
 <style style lang="postcss">
   nav > div {
     @apply text-center m-auto  text-black font-normal transition-all duration-700;
   }
-  nav > button:hover {
+  nav > a {
+    @apply flex m-auto w-full h-full;
+  }
+  nav > a > span {
+    @apply m-auto;
+  }
+  nav > a:hover {
     @apply bg-light-blue-hover;
   }
   

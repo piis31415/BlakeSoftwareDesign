@@ -11,12 +11,12 @@
 </div>
 <div>
   <h4>Problems of the Day (PODs)!</h4>
-  <p>Each problem that you answer correctly wins oyu one skittle for your color fam. The PODs will be revealed during the ASM skit, so listen up! Ask your advisors, teachers, or friends for help on any of the PODs!</p>
+  <p>Each problem that you answer correctly wins you one skittle for your color fam. The PODs will be revealed during the ASM skit, so listen up! Ask your advisors, teachers, or friends for help on any of the PODs!</p>
   <button>Submit Today's PODs</button>
 </div>
 <div class="flex-row">
   <div>
-    <h4>Recruit Students for Skitkkkkkkkkkkkltles!!</h4>
+    <h4>Recruit Students for Skitkkkkkkkkkkkittles!!</h4>
   </div>
   <img src="" alt="A group of people doing the limbo"/>
 </div>

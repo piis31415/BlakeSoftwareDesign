@@ -16,6 +16,9 @@
 <script>
   import { onMount } from 'svelte';
   import DividingBar from '../../components/DividingBar.svelte';
+  import { post } from '../../components/util';
+
+  // post();
 
   let editor;
   
@@ -41,9 +44,7 @@
     <h3 class="text-center text-3xl">Add New User</h3>
     <DividingBar />
     <div>
-      <textarea class="w-full h-full m-4">
-
-      </textarea>
+      <textarea id="add-user-textbox"></textarea>
     </div>
   </div>
 </main>
@@ -55,6 +56,10 @@
   }
   .box {
     @apply border-solid border-highlight-blue border-2 rounded-lg m-4;
+  }
+  #add-user-textbox {
+    @apply m-4 h-auto resize-none;
+    width: calc(100% - theme('spacing.4') - theme('spacing.4'));
   }
   @screen lg {
     main {
