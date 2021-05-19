@@ -8,7 +8,7 @@
     "lint": "prettier --check . && eslint --ignore-path .gitignore .",
     "format": "prettier --write .",
     "prepare": "npm run vite-workaround",
-    "vite-workaround": "find node_modules/@material/ -name \"*.js.map\" -type f -delete"
+    "vite-workaround": ""
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
