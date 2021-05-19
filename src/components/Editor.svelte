@@ -97,3 +97,8 @@
   <button on:click={onSave} class="border-2 border-highlight-blue rounded-lg p-1 mx-auto text-center">Send Message!</button>
 </div>
 
+<style style lang="postcss">
+  h2 {
+    @apply text-2xl;
+  }
+</style>
