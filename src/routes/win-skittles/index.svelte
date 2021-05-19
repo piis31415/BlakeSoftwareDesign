@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   import skittles from '../../assets/skittles.jpg'
 </script>
 

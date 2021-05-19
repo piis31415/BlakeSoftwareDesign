@@ -1,11 +1,11 @@
-<script>
+<script lang='ts'>
   import frontpage_img from '../assets/front-page.png';
   import Fa from 'svelte-fa/src/fa.svelte';
   import { faFacebookSquare, faTwitterSquare, faFlickr as faFlickrSquare, faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
 </script>
 
 <div class="h-full">
-  <img src={frontpage_img} />
+  <img src={frontpage_img} class="w-full" alt="random people studying and enjoying themselves"/>
   <div class="flex flex-row">
     <Fa icon={faFacebookSquare} class="m-auto" size="5x"/>
     <Fa icon={faTwitterSquare} class="m-auto" size="5x"/>

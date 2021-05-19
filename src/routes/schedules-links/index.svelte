@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   import about_img from '../../assets/about-lw-image.png';
 </script>
 

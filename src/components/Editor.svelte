@@ -93,4 +93,7 @@
 
 <div id="editorjs" />
 
-<button on:click={onSave}>Save =</button>
+<div class="flex flex-row p-4">
+  <button on:click={onSave} class="border-2 border-highlight-blue rounded-lg p-1 mx-auto text-center">Send Message!</button>
+</div>
+
