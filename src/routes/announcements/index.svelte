@@ -1,7 +1,7 @@
 <script lang='ts'>
   
 </script>
-<div id="page-container" class="mt-12 w-full relative">
+<div id="page-container" class="p-4 mt-12 w-full relative">
   <span class="text-5xl text-center m-auto">Announcements</span>
   <!-- {#each } -->
 </div>
