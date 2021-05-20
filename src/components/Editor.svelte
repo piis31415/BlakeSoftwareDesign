@@ -94,10 +94,10 @@
   };
 </script>
 
-<div id="editorjs" />
+<div class="p-4 bg-gray-100" id="editorjs" />
 
 <div class="flex flex-row p-4">
-  <button on:click={onSave} class="border-2 border-highlight-blue rounded-lg p-1 mx-auto text-center">Send Message!</button>
+  <button on:click={onSave} class="p-2 border-solid border-highlight-blue border-2 rounded-lg m-4 transition duration-100 ease-in-out hover:bg-gray-200">Send Message!</button>
 </div>
 
 <style style lang="postcss">

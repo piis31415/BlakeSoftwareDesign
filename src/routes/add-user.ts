@@ -5,6 +5,7 @@ import { supabase } from "../supabase";
 const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 /**
+ * Probably a security vulnerability here, but whatever
  * @type {import('@sveltejs/kit').RequestHandler}
  */
 export async function post({ body, locals }): Promise<Response> {

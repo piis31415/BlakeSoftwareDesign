@@ -18,9 +18,6 @@ export const routes = [
 	// src/routes/schedules-links/index.svelte
 	[/^\/schedules-links\/?$/, [c[0], c[3]], [c[1]]],
 
-	// src/routes/announcements/index.ts
-	[/^\/announcements\/?$/],
-
 	// src/routes/announcements/index.svelte
 	[/^\/announcements\/?$/, [c[0], c[4]], [c[1]]],
 

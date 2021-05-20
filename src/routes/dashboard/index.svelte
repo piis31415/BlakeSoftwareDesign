@@ -9,7 +9,10 @@
       }
     }
     return {
-      status: 200
+      status: 200,
+      props: {
+        role: session.role
+      }
     }
   }
 </script>
@@ -19,18 +22,25 @@
   import { post } from '../../components/util';
 
   // post();
-
+  export let role;
   let editor;
+  console.log(globalThis.cookie);
+
   
   onMount(async () => {
     // Dynamically load editor on client side
     // because the Editor requires access to window
     // globals and such
-    editor = (await import('../../components/Editor.svelte')).default;
+    if (role === 'admin') {
+      editor = (await import('../../components/Editor.svelte')).default;
+    }
   })
 
   function onEditorSave(bruh) {
     console.log('bruh', bruh);
+    post('make-announcement', {
+      blocks: bruh.detail.blocks
+    })
   }
   
   let userEmails;
@@ -54,16 +64,16 @@
 
 <main class="grid grid-flow-row">
   <div class="box">
-    <h3 class="text-center text-3xl">Make A New Announcement</h3>
+    <h3 class="p-2 text-center text-3xl">Make A New Announcement</h3>
     <DividingBar />
     <svelte:component this={editor} on:save={onEditorSave}/>
   </div>
   <div class="box">
-    <h3 class="text-center text-3xl">Add New User</h3>
+    <h3 class="p-2 text-center text-3xl">Add New User</h3>
     <DividingBar />
     <div class="flex flex-col">
-      <textarea id="add-user-textbox" bind:value={userEmails}></textarea>
-      <button on:click={() => addUsers()} class="">Add Users</button>
+      <textarea class = "bg-gray-100 flex-grow" id="add-user-textbox" bind:value={userEmails}></textarea>
+      <button on:click={() => addUsers()} class="p-1 border-solid border-highlight-blue border-2 rounded-lg m-4 flex-none">Add Users</button>
     </div>
   </div>
 </main>
@@ -75,6 +85,9 @@
   }
   .box {
     @apply border-solid border-highlight-blue border-2 rounded-lg m-4;
+  }
+  button {
+    @apply  transition duration-100 ease-in-out hover:bg-gray-200;
   }
   #add-user-textbox {
     @apply m-4 h-auto resize-none;

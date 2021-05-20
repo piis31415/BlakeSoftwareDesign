@@ -110,13 +110,21 @@ const supabase = new SupabaseClient(
   }
 );
 
+
 const googleAuth = async () => {
+  const redirect = new URL(globalThis.location.href);
+  redirect.pathname = 'dashboard';
+  console.log(redirect);
   const { user, error, session } = await supabase.auth.signIn({
     provider: 'google'
+  },{
+    redirectTo: redirect.toString()
   });
-  // console.log(user, error, session);
+  console.log(error);
+  if (error) return false;
 }
 
 export {
+  supabase,
   googleAuth
 }

@@ -11,6 +11,7 @@ export async function handle({ request, render }): Promise<any> {
   request.locals.admin = false;
 
   // console.log(request);
+  // console.log(headers?.cookie)
   if (!headers.cookie) return render(request);
   // console.log(headers.cookie);
   const token = cookie.parse(headers.cookie)?.token;

@@ -22,6 +22,7 @@ module.exports = {
 				'light-blue': '#E4E5F4',
 				'light-blue-hover': '#C4C5D4',
 				'dark-blue': '#394c6a',
+				'dark-blue-hover': "#192c4a",
 				'highlight-blue': '#60a5fa' // same as blue-400
 			}
 		},
