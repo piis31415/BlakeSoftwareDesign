@@ -16,10 +16,10 @@
     }
   }
 </script>
-<script>
+<script lang='ts'>
   import { onMount } from 'svelte';
   import DividingBar from '../../components/DividingBar.svelte';
-  import { post } from '../../components/util';
+  import { post, supabase } from '../../components/util';
 
   // post();
   export let role;
@@ -36,11 +36,13 @@
     }
   })
 
-  function onEditorSave(bruh) {
-    console.log('bruh', bruh);
-    post('make-announcement', {
-      blocks: bruh.detail.blocks
+  async function onEditorSave({ detail }) {
+    console.log('bruh', JSON.stringify(detail.blocks));
+    const { data, error } = supabase.rpc('new_announcement', {
+      announcement_data: JSON.stringify(detail.blocks)
     })
+    if (error) console.error(error);
+    else console.log(data);
   }
   
   let userEmails;
