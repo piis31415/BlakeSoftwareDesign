@@ -20,12 +20,12 @@
   <img src="" alt="A group of people doing the limbo"/>
   <h4> Leaderboard </h4>
   <div class="flex mx-auto grid-cols-3 grid-rows-2 gap-4">
-    <div class="font-bold text-gray-700 rounded-full bg-black items-center justify-center"> 1 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-black items-center justify-center"> 2 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-black items-center justify-center"> 3 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-black items-center justify-center"> 4 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-black items-center justify-center"> 5 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-black items-center justify-center"> 6 </div>
+    <div class="font-bold text-gray-700 rounded-full bg-red items-center justify-center"> 1 </div>
+    <div class="font-bold text-gray-700 rounded-full bg-orange items-center justify-center"> 2 </div>
+    <div class="font-bold text-gray-700 rounded-full bg-yellow items-center justify-center"> 3 </div>
+    <div class="font-bold text-gray-700 rounded-full bg-green items-center justify-center"> 4 </div>
+    <div class="font-bold text-gray-700 rounded-full bg-blue items-center justify-center"> 5 </div>
+    <div class="font-bold text-gray-700 rounded-full bg-purple items-center justify-center"> 6 </div>
   </div>
 
 <style style lang='postcss'>
