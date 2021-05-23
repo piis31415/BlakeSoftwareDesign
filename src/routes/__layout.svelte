@@ -19,9 +19,10 @@
 	let ready = false;
 	onMount(() => {
     ready = true;
+		console.log(window.location.pathname);
     supabase.auth.onAuthStateChange((ev, session) => {
-      console.log(ev, session);
-      setTimeout(()=>window.location.reload(),100);
+			console.log(ev, session);
+			setTimeout(()=>window.location.pathname='/dashboard',100);
     })
   });
 	console.log('loggedin:',loggedIn);
