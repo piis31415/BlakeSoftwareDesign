@@ -41,7 +41,7 @@
               //   console.log(data);
               //   return { success: 1, file: { url: data } };
               // });
-              return resizeImage(file, () => {}).then((data) => {
+              return resizeImage(file).then((data) => {
                 console.log(data);
                 return { success: 1, file: { url: data } };
               });
@@ -62,7 +62,7 @@
       //onChange: () => {console.log(`Editor's content changed!`)}
     });
   });
-  let resizeImage = (file, onLoadCallback) => {
+  let resizeImage = (file) => {
     return new Promise((resolve, reject) => {
       Resizer.imageFileResizer(
         file,
