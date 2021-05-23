@@ -71,7 +71,9 @@
         "JPEG",
         resize.q,
         0,
-        (uri) => resolve(uri),
+        (uri) => {
+          resolve(uri);
+          },
         "base64"
       );
     });
