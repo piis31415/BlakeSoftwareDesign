@@ -1,6 +1,5 @@
 <!-- REPURPOSED FROM: https://github.com/katendeglory/editor-js-with-svelte/blob/master/src/Editor.svelte -->
 <script lang="ts">
-  import Resizer from "react-image-file-resizer";
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
   let editor;
@@ -19,7 +18,35 @@
     const List = (await import( "@editorjs/list")).default;
     const Delimiter = (await import( "@editorjs/delimiter")).default;
     const Checklist = (await import( "@editorjs/checklist")).default;
+    const Resizer = (await import("react-image-file-resizer")).default;
     
+    let resizeImage = (file) => {
+      return new Promise((resolve, reject) => {
+        Resizer.imageFileResizer(
+          file,
+          resize.w,
+          resize.h,
+          "JPEG",
+          resize.q,
+          0,
+          (uri) => {
+            resolve(uri);
+          },
+          "base64"
+          );
+        });
+      };
+      
+      const _getBase64 = (file, onLoadCallback) => {
+        return new Promise(function (resolve, reject) {
+          var reader = new FileReader();
+          reader.onload = function () {
+            return resolve(reader.result);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      };
     tools = {
       header: {
         class: Header,
@@ -62,32 +89,6 @@
       //onChange: () => {console.log(`Editor's content changed!`)}
     });
   });
-  let resizeImage = (file) => {
-    return new Promise((resolve, reject) => {
-      Resizer.imageFileResizer(
-        file,
-        resize.w,
-        resize.h,
-        "JPEG",
-        resize.q,
-        0,
-        (uri) => {
-          resolve(uri);
-          },
-        "base64"
-      );
-    });
-  };
-  const _getBase64 = (file, onLoadCallback) => {
-    return new Promise(function (resolve, reject) {
-      var reader = new FileReader();
-      reader.onload = function () {
-        return resolve(reader.result);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
   let dispatch = createEventDispatcher();
   let onSave = async () => {
     const savedData = await editor.save();
