@@ -6,7 +6,7 @@
   console.log(announcements)
 </script>
 
-<div class="container">
+<div class="p-8 container">
   {#if announcements}
     {#each announcements as announcement}
       <div>

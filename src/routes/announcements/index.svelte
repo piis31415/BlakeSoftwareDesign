@@ -11,8 +11,8 @@
     // console.log('announcements', announcements);
   })();
 </script>
-<div id="page-container" class="p-4 mt-12 w-full relative">
-  <span class="pb-8 text-5xl text-center m-auto">Announcements</span>
+<div id="page-container" class="pt-8 mx-auto w-full relative">
+  <span class="p-8 text-5xl w-full text-center m-auto">Announcements</span>
   <Announcement_renderer announcements={announcements} />
 </div>
 

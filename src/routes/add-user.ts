@@ -22,9 +22,9 @@ export async function post({ body, locals }): Promise<Response> {
   for(const email of body.emails) {
     if (!re.test(String(email).toLowerCase())) continue; 
     await supabase.auth.api.inviteUserByEmail(email);
-    (await supabase.from('users').update({
+    await (await supabase.from('users').update({
       'user_role': body.roles
-    }).contains('email',email));
+    }).eq('email',email));
     emailsAdded.push(email);
   }
   return {
