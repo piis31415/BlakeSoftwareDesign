@@ -12,7 +12,7 @@
 </script>
 
 
-<nav class="pb-2 w-full bg-light-blue flex flex-row h-20 top-0 absolute">
+<nav class="pb-2 w-full bg-light-blue flex flex-row h-20 top-0 fixed z-50">
   <img src={logo} on:click={()=>{goto('/')}} alt="Learning Works Logo" class="cursor-pointer"/>
   <a sveltekit:prefetch href="/announcements">
       <span>Announcements</span>
