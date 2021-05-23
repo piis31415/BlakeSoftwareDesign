@@ -21,12 +21,7 @@
     ready = true;
     supabase.auth.onAuthStateChange((ev, session) => {
       console.log(ev, session);
-      console.log(window.location.pathname);
-      if (window.location.pathname == 'dashboard') {
-        window.location.reload();
-      } else {
-        window.location.pathname = 'dashboard';
-      }
+      setTimeout(()=>window.location.reload(),100);
     })
   });
 	console.log('loggedin:',loggedIn);
