@@ -26,6 +26,14 @@ module.exports = {
 				'highlight-blue': '#60a5fa' // same as blue-400
 			}
 		},
+		fill: theme => ({
+			'red': theme('colors.red.600'),
+			'orange': theme('colors.yellow.500'),
+			'yellow': theme('colors.yellow.300'),
+			'green': theme('colors.green.500'),
+			'blue': theme('colors.blue.600'),
+			'purple': theme('colors.purple.500')
+		})
 	},
 	variants: {
 		extend: {},

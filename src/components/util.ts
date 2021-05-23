@@ -125,6 +125,5 @@ const googleAuth = async () => {
 }
 
 export {
-  supabase,
   googleAuth
 }

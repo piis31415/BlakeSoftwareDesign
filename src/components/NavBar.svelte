@@ -1,7 +1,8 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import logo from "../assets/logo.png";
-  import { supabase, googleAuth } from "./util";
+  import { googleAuth } from "./util";
+  import { supabase } from '../supabase';
   export let loggedIn: boolean = false;
 
   supabase.auth.onAuthStateChange((ev, session) => {

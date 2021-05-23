@@ -14,20 +14,42 @@
   <p>Each problem that you answer correctly wins you one skittle for your color fam. The PODs will be revealed during the ASM skit, so listen up! Ask your advisors, teachers, or friends for help on any of the PODs!</p>
   <button>Submit Today's PODs</button>
 </div>
-  <div>
-    <h4>Recruit Students for Skkkkkkkkkkkittles!!</h4>
-  </div>
-  <img src="" alt="A group of people doing the limbo"/>
-  <h4> Leaderboard </h4>
-  <div class="flex mx-auto grid-cols-3 grid-rows-2 gap-4">
-    <div class="font-bold text-gray-700 rounded-full bg-red items-center justify-center"> 1 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-orange items-center justify-center"> 2 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-yellow items-center justify-center"> 3 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-green items-center justify-center"> 4 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-blue items-center justify-center"> 5 </div>
-    <div class="font-bold text-gray-700 rounded-full bg-purple items-center justify-center"> 6 </div>
-  </div>
-
+<div>
+  <h4>Recruit Students for Skkkkkkkkkkkittles!!</h4>
+</div>
+<img src="" alt="A group of people doing the limbo"/>
+<h4> Leaderboard </h4>
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <style style lang="postcss">
+    text {
+      font: italic 3px sans-serif;
+    }
+  </style>
+  <g>
+    <circle cx="40" cy="30" r="8" class="font-bold fill-red text-black"></circle>
+    <text x="40" y="30" text-anchor="middle" >64</text>
+  </g>
+  <g>
+    <circle cx="40" cy="50" r="8" class="font-bold fill-yellow text-black"></circle>
+    <text x="40" y="50" text-anchor="middle" >33</text>
+  </g>
+  <g>
+    <circle cx="40" cy="70" r="8" class="font-bold fill-blue text-black"></circle>
+    <text x="40" y="70" text-anchor="middle" >11</text>
+  </g>
+  <g>
+    <circle cx="60" cy="30" r="8" class="font-bold fill-orange text-black"></circle>
+    <text x="60" y="30" text-anchor="middle" >54</text>
+  </g>
+  <g>
+    <circle cx="60" cy="50" r="8" class="font-bold fill-green text-black"></circle>
+    <text x="60" y="50" text-anchor="middle" >32</text>
+  </g>
+  <g>
+    <circle cx="60" cy="70" r="8" class="font-bold fill-purple text-black"></circle>
+    <text x="60" y="70" text-anchor="middle" >6</text>
+  </g>
+</svg>
 <style style lang='postcss'>
   * {
     @apply text-dark-blue text-center;

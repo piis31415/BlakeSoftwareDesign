@@ -13,10 +13,18 @@ export async function post({ body, locals }): Promise<Response> {
     status: 403,
     headers: {}
   };
+  console.log(body?.roles)
+  if (body?.roles !== 'admin' && body?.roles !== 'user' && body?.roles !== 'teacher') return {
+    status: 403,
+    headers: {}
+  }
   const emailsAdded = [];
   for(const email of body.emails) {
     if (!re.test(String(email).toLowerCase())) continue; 
-    supabase.auth.api.inviteUserByEmail(email);
+    await supabase.auth.api.inviteUserByEmail(email);
+    (await supabase.from('users').update({
+      'user_role': body.roles
+    }).contains('email',email));
     emailsAdded.push(email);
   }
   return {

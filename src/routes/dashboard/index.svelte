@@ -19,12 +19,16 @@
 <script lang='ts'>
   import { onMount } from 'svelte';
   import DividingBar from '../../components/DividingBar.svelte';
-  import { post, supabase } from '../../components/util';
+  import { post } from '../../components/util';
+  import { supabase } from '../../supabase';
 
   // post();
   export let role;
+  console.log(role);
   let editor;
   console.log(globalThis.cookie);
+  // realllly bad naming of this variable, but kinda lazy so whatever
+  let roles;
 
   
   onMount(async () => {
@@ -37,8 +41,8 @@
   })
 
   async function onEditorSave({ detail }) {
-    console.log('bruh', JSON.stringify(detail.blocks));
-    const { data, error } = supabase.rpc('new_announcement', {
+    console.log('bruh', detail);
+    const { data, error } = await supabase.rpc('new_announcement', {
       announcement_data: JSON.stringify(detail.blocks)
     })
     if (error) console.error(error);
@@ -51,7 +55,7 @@
     console.log(userEmails);
     if (!userEmails) return;
     // seperate emails by spaces
-    let emails = userEmails.split(' ');
+    let emails = userEmails.trim().split(' ');
     for (const email of emails) {
       if (!re.test(String(email).toLowerCase())) {
         console.error('Invalid Email');
@@ -59,11 +63,12 @@
       }
     }
     post('add-user', {
-      emails
+      emails,
+      roles
     });
   }
 </script>
-
+{#if role === "admin"}
 <main class="grid grid-flow-row">
   <div class="box">
     <h3 class="p-2 text-center text-3xl">Make A New Announcement</h3>
@@ -75,11 +80,20 @@
     <DividingBar />
     <div class="flex flex-col">
       <textarea class = "bg-gray-100 flex-grow" id="add-user-textbox" bind:value={userEmails}></textarea>
+      <select class="m-auto bg-gray-100" bind:value={roles}>
+        <option value="user">User</option>
+        <option value="teacher">Teacher</option>
+        <option value="admin">Administrator</option>
+      </select>
       <button on:click={() => addUsers()} class="p-1 border-solid border-highlight-blue border-2 rounded-lg m-4 flex-none">Add Users</button>
     </div>
   </div>
 </main>
-
+{:else}
+<h1 class="p-4 text-center text-5xl"> ¯\_(ツ)_/¯ </h1>
+<hr>
+<p class="p-4 pl-8"> If you are seeing this, you are not an admin and cannot access the tool to make announcements. This page is a work-in-progress.</p>
+{/if}
 <style style lang='postcss'>
   main {
     @apply grid;
