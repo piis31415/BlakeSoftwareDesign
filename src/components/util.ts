@@ -6,7 +6,7 @@
  */
 export async function post(path: string, data: Record<string,unknown>): Promise<Record<string,unknown>> {
   // console.log(JSON.stringify(data));
-  return (await (await fetch(`http://localhost:3000/${path}`, {
+  return (await (await fetch(`http://learningworks.vercel.app/${path}`, {
     method: 'POST',
     mode: 'same-origin',
     headers: {
