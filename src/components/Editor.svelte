@@ -65,14 +65,14 @@
           uploader: {
             async uploadByFile(file) {
               console.log(file);
-              // return _getBase64(file, function (e) {}).then((data) => {
-              //   console.log(data);
-              //   return { success: 1, file: { url: data } };
-              // });
-              return resizeImage(file).then((data) => {
+              return _getBase64(file, function (e) {}).then((data) => {
                 console.log(data);
                 return { success: 1, file: { url: data } };
               });
+              // return resizeImage(file).then((data) => {
+              //   console.log(data);
+              //   return { success: 1, file: { url: data } };
+              // });
             },
           },
         },
